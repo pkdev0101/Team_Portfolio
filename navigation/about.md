@@ -1,8 +1,8 @@
 ---
-layout: post 
+layout: post
 title: About
-description: My name is John, often referred to as "Mr M(ort)" in my CompSci classes. I am primary author and keeper of these CompSci materials.
-menu: nav/home.html
+permalink: /about/
+comments: true
 ---
 
 ## As a conversation Starter
@@ -113,7 +113,7 @@ Here is what I did at those places
 
 ### Culture, Family, and Fun
 
-Everything for me, as for many others, revolves around family and faith. Oh, to stay in context of this site ... don't forget I like code, code, coding.
+Everything for me, as for many others, revolves around family and faith.
 
 - My mother told me that I was Danish, English. and Irish, here is my researched [family tree]({{site.baseurl}}/images/about/familytree.png)
 - My family is pretty big as I have been married twice, my 1st wife passed away.  We have had 5 kids, 4 adopted by me, 1 biological.  Plus, there are three grandkids.  My name to my grandkids is Abuilito.
