@@ -49,4 +49,4 @@ hide: true
 
 > Feel free to reach out if you'd like to collaborate or learn more about my work.
 
-<p style="color: #2A7DB1;">Email: <a href="mailto:your-email@example.com" style="color: #2A7DB1; text-decoration: underline;">your-email@example.com</a></p>
+<p style="color: #2A7DB1;">Email: <a href="mailto:your-email@example.com" style="color: #2A7DB1; text-decoration: underline;">jmort1021@gmail.com</a></p>
