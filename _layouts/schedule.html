@@ -30,21 +30,11 @@ Load all posts
 
 {% if unitData.illustration %}
 <details>
-  <summary>Text Illustration</summary>
+  <summary>Illustration</summary>
 
   <pre>
     <p>{{ unitData.illustration }}</p>
   </pre>
-</details>
-<br/>
-{% endif %}
-
-{% if unitData.mermaid_figure %}
-<details>
-  <summary>Visual Illustration</summary>
-  <div class="mermaid">
-    {{ unitData.mermaid_figure }}
-  </div>
 </details>
 <br/>
 {% endif %}

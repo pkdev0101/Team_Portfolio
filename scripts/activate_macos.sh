@@ -1,53 +1,44 @@
-#!/bin/bash
-set -ex
+<<comment
+# Help
+# Objective of this exercise is to test setup environment ...
+#     plus, start a Web Server
+# The hash # is a comment or action ...
+#     # is a comment symbol in a .sh file 
+# The dollar $ represent a terminal command ... 
+#     $ is not part of command
 
-BASHRC="$HOME/.zshrc"
+# Start a terminal for commands
+$ mdkir vscode
+cd vscode
+git clone https://github.com/open-coding-society/pages.git
+cd ~/vscode/pages/scripts
+./activate_ubuntu.sh
 
-log() {
-    echo "=== ✅ $1 ==="
-}
+# Run the head command, leave this terminal open ...
+#    the head command shows remaining instructions  ...
+#    find this spot and continue on
+head -34 ~/vscode/pages/scripts/activate_ubuntu.sh
 
-add_to_bashrc() {
-    local line="$1"
-    grep -qxF "$line" "$BASHRC" || echo "$line" >> "$BASHRC"
-}
+# Start a new terminal ...
+#    the "new" terminal is the command terminal ...
+#    the "original" terminal shows commands ...
+#    type commands in "new" terminal
+cd ~/vscode/pages
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+bundle install
+make
 
-# 0. Aliases and Virtualenv Prompt
-add_to_bashrc 'alias code="code --no-sandbox"'
+# End
+# The build execution is complete ...
+#     Ctl-Click on "link" in terminal ...
+#     observe web site in the opened browser
+comment
 
-# 1. Brew Packages (Python & Ruby)
-brew update
-brew install python ruby
-
-# 2. Ruby Gems
-# Add Homebrew Ruby to PATH (before system Ruby)
-RUBY_PATH=$(brew --prefix ruby)/bin
-add_to_bashrc "export PATH=\"$RUBY_PATH:\$PATH\""
-
-# Set GEM_HOME to user-accessible location
-GEM_HOME="$HOME/.local/gems"
-mkdir -p "$GEM_HOME"
-add_to_bashrc "export GEM_HOME=\"$GEM_HOME\""
-add_to_bashrc "export PATH=\"$GEM_HOME/bin:\$PATH\""
-
-# Install gems (no sudo needed now)
-gem install bundler jekyll benchmark openssl zlib racc bigdecimal drb unicode-display_width \
-            logger etc fileutils ipaddr mutex_m ostruct rss strscan stringio time
-
-# 3. Python3 is Python
-mkdir -p "$HOME/.local/bin"
-ln -sf "$(which python3)" "$HOME/.local/bin/python"
-ln -sf "$(which pip3)" "$HOME/.local/bin/pip"
-add_to_bashrc 'export PATH="$HOME/.local/bin:$PATH"'
-
-# 4. Python3 is Python
-source $BASHRC
-python --version
-pip --version
-ruby -v
-bundle -v
-gem --version
-
-# Restart the terminal
-echo "All tools are set up successfully!"
-echo "Please start a new terminal or run 'source $BASHRC' to apply the changes."
+GITHUB_LOCATION=${1:-$(pwd)}
+#### Setup CompSci / GitHub Pages Tool Requirements
+$GITHUB_LOCATION/setup_macos.sh
+#### Show instructions
+head -36 $GITHUB_LOCATION/activate_macos.sh
+echo "=== !!!Start a new Terminal!!! ==="
