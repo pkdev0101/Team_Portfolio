@@ -1,20 +1,20 @@
 # Introduction
 
-Open Coding Society `Pages` is a project designed to support students in their Computer Science and Software Engineering education. It offers a wide range of resources including tech talks, code examples, and educational blogs.
+Open Coding Society `student` is a project designed to allow students to build their customized blog to support Computer Science or other education. This repository offers a wide range of resources that are taught in conjunction with the Open Coding Society 'pages' repository.
 
-This GitHub Pages repository can be customized by the blogger to support computer science learnings as the student works through the pathway's of using Javascript, Python/Flask, Java/Spring. It is intended to support course work for Computer Sciecne and Software Engineering (CSSE), AP Computer Science Principles (APCSP or CSP), and AP Computer Science 'A' (APCSA, or CSA).
+This GitHub Pages repository can be customized by the blogger to support computer science learning as the student works through the pathways of using JavaScript, Python/Flask, Java/Spring.
 
 ## Student Requirements
 
 HS students will have the opportunity to create their personal GitHub Pages repository as the progress through their coursework.
 
-In general, Students and Instructors are expected to use GitHub Pages to build lessons, complete classroom hacks/challenges and perform exploritory work. This project also offers some JavaScript games and and serves as a frontend to multiple full-stack applications.
+In general, Students and Instructors are expected to use GitHub Pages to build lessons, complete classroom hacks/challenges and perform exploritory work. This project also offers some JavaScript games and can serve as a frontend to multiple full-stack applications.
 
 Exchange of information from this repository to you personal GitHub Pages can be done in many ways...
 
-1. sharing a file, ie:  `wget "raw-link.ipynb"
-2. creating a template from this repository
-3. creating a fork to be shared by you and team members
+1. student is indtend to use this repository as a template
+2. sharing or obtaining a file, ie, `wget "raw-link.ipynb" from GitHub
+2. drag and dropping a file between two opened vscode projects
 4. etc.
 
 ---
@@ -31,9 +31,9 @@ The Apache license has its roots in Fastpages.  Thus, it carries that license fo
 
 ### Key Features
 
-- **Code Examples**: Provides practical coding examples in JavaScript, including a platformer game, and frontend code for user databases using Python and Java backends.
-- **Educational Blogs**: Offers instructional content on various topics such as developer tools setup, deployment on AWS, SQL databases, machine learning, and data structures. It utilizes Jupyter Notebooks for interactive lessons and coding challenges, often referred to as `hacks`.
-- **Tools and Integrations**: Features GitHub actions for blog publishing, Utterances for blog commenting, local development support via Makefile and scripts, and styling with the Minima Theme and SASS. It also includes an Agile Toolkit to assist in Student Teaching, Assignment Tracking, Live Reviews, and more.
+- **Foundation Blogs**: In the GitHub.io student runtime, there are articles that can be obtained through the blog or search links.
+- **Code Examples**: Provides practical coding examples in JavaScript, including a few games, samples for index and about pages.
+- **Tools and Integrations**: Features GitHub actions for blog publishing, Utterances for blog commenting, local development support via Makefile and scripts, and styling with the Minima Theme and SASS.
 
 ### Contributions
 
@@ -55,16 +55,16 @@ The absolutes in setup up...
 **Update `_config.yml`**: You need to modify the `_config.yml` file to reflect your repository's name. This configuration is crucial because it ensures that your project's styling is correctly applied, making your deployed site look as intended rather than unstyled or broken.
 
 ```text
-github_repo: "pages" 
-baseurl: "/pages"
+github_repo: "student" 
+baseurl: "/student"
 ```
 
 **Set Repository Name in Makefile**: Adjust the `REPO_NAME` variable in your Makefile to match your GitHub repository's name. This action facilitates the automatic updating of posts and notebooks on your local development server, improving the development process.
 
 ```make
 # Configuration, override port with usage: make PORT=4200
-PORT ?= 4500
-REPO_NAME ?= pages
+PORT ?= 4600
+REPO_NAME ?= student
 LOG_FILE = /tmp/jekyll$(PORT).log
 ```
 
@@ -74,7 +74,7 @@ All `GitHub Pages` websites are managed on GitHub infrastructure and use GitHub 
 
 - GitHub uses `Jekyll` to transform your markdown and HTML content into static websites and blogs. [Jekyll](https://jekyllrb.com/).
 - A Linux shell is required to work with this project integration with GitHub Pages, GitHub and VSCode.  Ubuntu is the preferred shell, though MacOS shell is supported as well.  There will be some key setup scripts that follow in the README.
-- Visual Studio Code is the Pages author's preferred code editor and extensible development environment.  VSCode has a rich ecosystem of developer extensions that ease working with GitHub Pages, GitHub, and many programming languages.  Setting up VSCode and extensions will be elaborated upon in this document.
+- Visual Studio Code is the author's preferred code editor and extensible development environment.  VSCode has a rich ecosystem of developer extensions that ease working with GitHub Pages, GitHub, and many programming languages.  Setting up VSCode and extensions will be elaborated upon in this document.
 - An anatomy section in this README will describe GitHub Pages and conventions that are used to organize content and files.  This includes file names, key coding files, metadata tagging of blogs, styling tooling for blogs, etc.
 
 ### Development Environment Setup
@@ -88,8 +88,8 @@ Quick start.  A quick start below is a reminder, but is dependent on your knowle
 Run these commands to obtain the project, then locate into the project directory with the terminal, install an extensive set of tools, and make.
 
 ```bash
-git clone <this-repo> # git clone https://github.com/open-coding-society/pages.git 
-cd <repo-dir>/scripts # cd pages 
+git clone <this-repo> # git clone https://github.com/open-coding-society/student.git 
+cd <repo-dir>/scripts # cd student 
 ```
 
 #### Windows WSL and/or Ubuntu Users
@@ -108,11 +108,13 @@ cd <repo-dir>/scripts # cd pages
 
 To preview the project you will need to "make" the project.
 
-### Bundle install
+### bundle install
 
 The very first time you clone run project you will need to run this Ruby command as the final part of your setup.
 
 ```bash
+./scripts/venv.sh
+source venv/bin/activate
 bundle install
 ```
 
@@ -132,7 +134,7 @@ Start the preview server in the terminal,
 The terminal output from `make` shows the server address. "Cmd" or "Ctl" click the http location to open the preview server in a browser. Here is an example Server address message, click on the Server address to load:...
 
   ```text
-  http://0.0.0.0:4500/pages/
+  http://0.0.0.0:4600/pages/
   ```
 
 ### Regeneration of web application
