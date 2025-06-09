@@ -1,11 +1,12 @@
 ---
 layout: lesson 
-show_reading_time: false
+show_reading_time: true
 permalink: /lessoncreation
 title: How to Create a Lesson
 video_url: "https://www.youtube.com/watch?v=4nE7MBTV7nQ"
 flashcards: lesson_flashcard
 categories: ['Lesson']
+author: Mihir Bapat, Kiruthic Selvakumar, Shawn Ray
 ---
 
 <div id="lesson-content">
