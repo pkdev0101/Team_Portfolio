@@ -46,6 +46,7 @@ hack_prompt: Write a function that adds two numbers.
 permalink: /functions
 flashcard: functions_flashcard
 game: functions_game
+category: ['Lesson']
 </code></pre>
 
   <p>You’ll customize this file every time you create a new lesson.</p>
