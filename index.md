@@ -4,6 +4,8 @@ title: I'm [Your Full Name]
 hide: true
 ---
 
+Hi! My name is [Your Full Name]
+
 ### Development Environment
 
 > Coding starts with tools, explore these tools and procedures with a click.
