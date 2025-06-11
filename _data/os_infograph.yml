@@ -11,7 +11,7 @@ Topics:
       - "Use apt to install tools"
       - "Access Linux from PowerShell"
     subtitle: "WSL + Ubuntu"
-    description: "Windows developers use WSL (Windows Subsystem for Linux) to run a full Ubuntu terminal. This setup enables native Linux commands, apt-based installations, and compatibility with developer tools like Python, Node.js, and Git. You'll configure Ubuntu through PowerShell and run shell scripts to complete your toolchain."
+    description: "Windows developers use WSL (Windows Subsystem for Linux) to run a full Ubuntu terminal. This setup enables native Linux commands and compatibility with developer tools like Python and Git."
 
   - title: "Kasm"
     image: "Kasm.png"
