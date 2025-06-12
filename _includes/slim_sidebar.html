@@ -27,7 +27,7 @@
   <div id="dictionary-modal" style="display: none; position: fixed; right: 0; top: 0; height: 100vh; width: 420px; background: rgba(255, 255, 255, 0.9); border-left: 1px solid rgba(0, 0, 0, 0.1); box-shadow: -12px 0 40px rgba(0, 0, 0, 0.2), -4px 0 20px rgba(0, 0, 0, 0.1); z-index: 1100; animation: slideIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);">
     <div style="height: 100%; display: flex; flex-direction: column; position: relative;">
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 28px 28px 20px; border-bottom: 1px solid rgba(0, 0, 0, 0.08);">
-            <h3 style="color: #1e293b; font-size: 22px; font-weight: 700; background: linear-gradient(135deg, #667eea, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0;">Dictionary Lookup</h3>
+            <h3 class="no_toc" style="color: #1e293b; font-size: 22px; font-weight: 700; background: linear-gradient(135deg, #667eea, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0;">Dictionary Lookup</h3>
             <button id="close-dict" style="background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.1); color: #475569; font-size: 16px; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;" onmouseenter="this.style.background='rgba(239, 68, 68, 0.15)'; this.style.borderColor='rgba(239, 68, 68, 0.3)'; this.style.color='#f87171'; this.style.transform='scale(1.05)';" onmouseleave="this.style.background='rgba(0, 0, 0, 0.05)'; this.style.borderColor='rgba(0, 0, 0, 0.1)'; this.style.color='#475569'; this.style.transform='';">✖</button>
         </div>
         <div style="flex: 1; padding: 28px; overflow-y: auto;">
@@ -43,7 +43,7 @@
   <div id="notes-sidebar" style="display: none; position: fixed; right: 0; top: 0; height: 100vh; width: 380px; background: rgba(255, 255, 255, 0.9); border-left: 1px solid rgba(0, 0, 0, 0.1); box-shadow: -12px 0 40px rgba(0, 0, 0, 0.2), -4px 0 20px rgba(0, 0, 0, 0.1); z-index: 1100; animation: slideIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);">
       <div style="height: 100%; display: flex; flex-direction: column; position: relative;">
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 28px 28px 20px; border-bottom: 1px solid rgba(0, 0, 0, 0.08);">
-              <h3 style="color: #1e293b; font-size: 22px; font-weight: 700; background: linear-gradient(135deg, #667eea, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0;">Your Notes</h3>
+              <h3 class="no_toc" style="color: #1e293b; font-size: 22px; font-weight: 700; background: linear-gradient(135deg, #667eea, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0;">Your Notes</h3>
               <button id="close-notes-sidebar" style="background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.1); color: #475569; font-size: 16px; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;" onmouseenter="this.style.background='rgba(239, 68, 68, 0.15)'; this.style.borderColor='rgba(239, 68, 68, 0.3)'; this.style.color='#f87171'; this.style.transform='scale(1.05)';" onmouseleave="this.style.background='rgba(0, 0, 0, 0.05)'; this.style.borderColor='rgba(0, 0, 0, 0.1)'; this.style.color='#475569'; this.style.transform='';">✖</button>
           </div>
           <div style="flex: 1; padding: 28px; overflow-y: auto; display: flex; flex-direction: column;">
@@ -528,7 +528,7 @@
               })
               .then(data => {
                   const meanings = data[0].meanings;
-                  let html = `<h4>${data[0].word}</h4>`;
+                  let html = `<h4 class="no_toc">${data[0].word}</h4>`;
                   meanings.forEach(meaning => {
                       html += `<b>${meaning.partOfSpeech}</b><br/>`;
                       meaning.definitions.forEach((def, i) => {

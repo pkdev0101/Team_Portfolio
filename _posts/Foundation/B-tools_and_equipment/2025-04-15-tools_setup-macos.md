@@ -99,3 +99,5 @@ jupyter --version
 ```
 
 ---
+
+{% include slim_sidebar.html %}
