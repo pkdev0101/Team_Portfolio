@@ -57,37 +57,14 @@ You’ll use standard Unix shell commands:
 1. **Install VS Code**  
    [VS Code link and instructions]
 
-2. **Install Homebrew**  
-   ```bash
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-   ```
-
-3. **Verify Installation**  
-   ```bash
-   brew --version
-   ```
-
----
-
-## Install Developer Tools
-
+2. **Run initialization scripts**
+   
 ```bash
-cd
-mkdir opencs 
-cd opencs 
-git clone https://github.com/open-coding-society/pages.git
-cd opencs/pages/scripts
-./activate_macos.sh
+git clone https://github.com/open-coding-society/student.git
+cd student
+chmod +x ./scripts/initialize_macos.sh
+./scripts/initialize_macos.sh
 ```
-
-### Custom MacOS Steps
-
-```bash
-ln -sF /opt/homebrew/share/jupyter/nbconvert ~/Library/Jupyter
-sudo ln -sF /opt/homebrew/bin/python3.12 /usr/local/bin/python
-sudo ln -sF /opt/homebrew/bin/pip3.12 /usr/local/bin/pip
-```
-
 ---
 
 ## Version Checks
