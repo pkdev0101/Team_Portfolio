@@ -42,8 +42,8 @@ echo ""
 if [ ! -f "requirements.txt" ] || [ ! -f "Gemfile" ]; then
     echo "❌ ERROR: This script must be run from the cloned repository directory"
     echo "Please ensure you have:"
-    echo "1. Cloned the repository: git clone https://github.com/open-coding-society/pages.git"
-    echo "2. Changed to the repository directory: cd pages"
+    echo "1. Cloned the repository: git clone https://github.com/open-coding-society/student.git"
+    echo "2. Changed to the repository directory: cd student"
     echo "3. Run this script from within that directory"
     exit 1
 fi
