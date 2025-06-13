@@ -1,5 +1,5 @@
 ---
-toc: True
+toc: False
 layout: post
 data: web-dev
 title: GitHub Pages About Me & Tools Hub
@@ -114,8 +114,13 @@ minima:
 
 # Step 4: Push Changes and Deploy
 
-Save your changes  
-Commit and push using VSCode 
+Save your changes.  
+Before pushing, test your site locally by running:
+
+```bash
+make 
+```
+
 Visit `https://<your-username>.github.io/<your-repo>` to see it live!
 
 ---
