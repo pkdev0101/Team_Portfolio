@@ -9,25 +9,23 @@ permalink: /web-dev/documentation
 breadcrumb: True
 ---
 
-## Overview
+##  Overview
 
 In this tutorial, you will:
 - Set up and deploy your personal site using GitHub Pages
 - Create an **About Me** page with Markdown
-- Link to your **Day 1 tools lessons** from a homepage
+- Add a **Tools Hub** page that links to your Day 1 lessons
 - Learn to test on `localhost`, commit with Git, and view on `github.io`
 
 This becomes your **hub** for your development journey.
 
 ---
 
-## Step 1: Edit `_config.yml`
+##  Step 1: Edit `_config.yml`
 
-Your `_config.yml` file is the settings file that powers your Jekyll site. You'll find it in the root of your GitHub Pages repository.
+Your `_config.yml` file is the settings file that powers your Jekyll site.
 
 ### Sample `_config.yml`
-
-Here's a sample to start from:
 
 ```yaml
 title: Nighthawk Pages 
@@ -39,6 +37,9 @@ baseurl: "/vibha_mandayam"
 future: true
 
 remote_theme: jekyll/minima
+plugins:
+  - jekyll-remote-theme
+
 minima:
   skin: dark
   social_links:
@@ -46,33 +47,26 @@ minima:
     - { platform: x, user_url: "https://x.com/NighthawkCoding/" }
     - { platform: youtube, user_url: "https://www.youtube.com/@nighthawkcodingsociety2868" }
 
-plugins:
-  - jekyll-remote-theme
-
-minima:
   nav_pages:
     - navigation/blog.md
     - navigation/search.md
     - navigation/about.md
     - navigation/tools.md
-    - README4YML.md
-
 ```
 
-# What to Customize
+### Customize These Fields
 
-**title**: Change to your own name or theme 
-**description**: Describe your site.  
-**owner_name**: Your full name.  
-**github_username**: Your GitHub username.  
-**github_repo**: The name of this GitHub repository.  
-**baseurl**: Should match the repo name, prefixed with `/`.
+- **title**: Change to your name or site theme  
+- **description**: Write a brief tagline or site purpose  
+- **owner_name**: Your full name  
+- **github_username** and **github_repo**: Match your GitHub  
+- **baseurl**: Should be `"/your_repo_name"` (include the slash)
 
 ---
 
-# Step 2: Create about.md
+## Step 2: Create `about.md`
 
-Create a file at `navigation/about.md` with the following content:
+In the `navigation/` folder, create `about.md` with this content:
 
 ```markdown
 ---
@@ -81,7 +75,7 @@ title: "About Me"
 permalink: /about/
 ---
 
-#  Hello!
+# Hello!
 
 I'm Vibha, a student passionate about CS, design, and making cool things with tech. This site documents my projects and learning journey.
 
@@ -100,29 +94,43 @@ I'm Vibha, a student passionate about CS, design, and making cool things with te
 
 ---
 
-# Step 3: Add the Page to Navigation
+## Step 3: Create `tools.md` for Your Hub
 
-In `_config.yml`, add this:
+Also inside `navigation/`, create `tools.md` to link your lessons:
 
-```yaml
-minima:
-  nav_pages:
-    - navigation/about.md
-```
-
+```markdown
+---
+layout: page
+title: Tools Hub
+permalink: /tools/
 ---
 
-# Step 4: Push Changes and Deploy
+# Tools Hub
 
-Save your changes.  
-Before pushing, test your site locally by running:
+Welcome to my tools hub! Here are links to my key setup guides and lessons:
+
+- [VS Code Setup](/posts/vscode-setup)
+- [GitHub Pages Guide](/web-dev/documentation)
+- [Git Commands](/posts/git-commands)
+```
+
+You can update these links to point to your actual posts or tools lessons.
+
+---
+## Step 4: Push & Deploy
+
+Once everything’s in place:
 
 ```bash
-make 
+make     
 ```
 
-Visit `https://<your-username>.github.io/<your-repo>` to see it live!
+
+Visit:  
+```
+https://<your-username>.github.io/<your-repo>/
+```
 
 ---
-Next: Learn how to use Markdown, link other pages, and add buttons to your homepage.
+
 
