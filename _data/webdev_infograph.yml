@@ -1,10 +1,10 @@
 # course 
-## documentation 
-Title: "Documentation"
-Description: "Before diving into full-stack development, start with the essentials. This guide introduces the foundational tools and practices needed to create your About Me page, collaborate online, and set up a working development environment."
+# ## documentation 
+Title: "Website Development Foundations"
+Description: "Before diving into full-stack development, start with the essentials. This guide introduces the foundational tools and practices needed to create your About Me page, understand data with Flask and Spring, and data retrieval."
 Topics:
-  - title: "Documentation & About Me"
-    image: "/web-dev/documentation.png"
+  - title: "Documenting Tool Setup & About Me"
+    image: "/aboutme.png"
     link: "/web-dev/documentation"
     alt: "Documentation and About Me site"
     keyPoints:
@@ -13,36 +13,3 @@ Topics:
       - "Use Markdown and GitHub"
     subtitle: "Start Here"
     description: "Begin your journey by reading the course documentation. Learn to create your personal site using GitHub and Markdown while getting comfortable with the development workflow."
-  - title: "GitHub Pages"
-    image: "/tools/github_pages.png"
-    link: "/tools/github_pages"
-    alt: "GitHub Pages"
-    keyPoints:
-      - "Make personal repository."
-      - "Cutomize _config.yml"
-      - "Activate GitHub Pages"
-      - "Make a change with vsdev.net"
-    subtitle: "Public Website"
-    description: "GitHub Pages tools and frameworks allow developers to create websites to share their projects. This is a great way to showcase your work and share it with the world."
-  - title: "OS"
-    image: "/tools/os.png"
-    link: "/tools/os"
-    alt: "Operating Systems"
-    keyPoints:
-      - "WSL for Windows"
-      - "MacOS for Apple"
-      - "Linux/KASM for Chromebook"
-      - "Tool compatibility"
-    subtitle: "Tools Setup"
-    description: "Coders require a cyber understand of linux, scripts, and packages to enable devlopment of JavaScript, Python, Java, Jupyter Notebooks, and more. Installing tools on a linux OS is a standard for developers throughout the world."
-  - title: "VSCode (Desktop)"
-    image: "/tools/vscode.png"
-    link: "/tools/vscode"
-    alt: "VSCode"
-    keyPoints:
-      - "Write code"
-      - "Build and test"
-      - "Debug"
-      - "Commit changes "
-    subtitle: "Code Editor"
-    description: "Writing code on a desktop is a common practice for developers. VS Code is a powerful code editor that allows developers to write, build, and test code prior to commiting changes to a repository." 

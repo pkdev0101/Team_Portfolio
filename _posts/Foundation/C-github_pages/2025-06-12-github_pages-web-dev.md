@@ -1,13 +1,13 @@
 ---
-layout: post
-title: Website Development
+toc: False
+layout: tailwindPost
 infoGraph: webdev_infograph
-description: How to do website developmend
-categories: ['GitHub Pages']
+title: Website Developemnt
+description: ill come back to this
+categories: ['webdev']
 permalink: /web-dev
-menu: nav/github_pages.html
-toc: True
-comments: True
+breadcrumb: True 
 ---
+
 
 {%- include tailwind/infograph.html -%}
