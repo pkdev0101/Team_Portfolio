@@ -49,10 +49,10 @@ Topics:
   - title: "Creative Code Projects"
     image: "/webdev/games.png"
     link: "/web-dev/projects"
-    alt: "Snake and Turtle Game"
+    alt: "Snake and Cookie Clicker Game"
     subtitle: "Interactive Fun"
     keyPoints:
       - "Edit Python/JS games"
       - "Customize visuals"
       - "Practice creativity"
-    description: "Modify Snake or Turtle games in Python or JavaScript to explore coding logic in a fun and creative way."
+    description: "Modify Snake or Cookie Clicker games in Python or JavaScript to explore coding logic in a fun and creative way."

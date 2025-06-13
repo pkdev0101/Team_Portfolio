@@ -61,3 +61,7 @@ Collaboration isn’t just about tools — it’s about mindset. Practice empath
 
 Feel free to try out VSCode Live Share in your next project — it’s an amazing way to connect and code together no matter where you are!
 
+
+### How to Pair Program/Split up Work: 
+The best way to split work between people is to split major features up, so that you can work on them seperately without interfering with each other. After that, you can start integrating your code, which requires more collaboration. Another way to split up work in pair programming is to have one person code, while the other one reviews their code, then switch periodically. 
+
