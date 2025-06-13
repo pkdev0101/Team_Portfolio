@@ -1,6 +1,6 @@
 ---
 toc: False
-layout: tailwindPost
+layout: post
 infoGraph: datastore_infograph
 title: Data Storage Foundations
 description: In this guide, you'll learn about why data storage is used and what you can do to store data in your own projects!
@@ -44,9 +44,31 @@ This memory is managed using databases.
 
 Flask and Spring are **backend frameworks** that help your app interact with these storage systems — they’re not databases themselves.
 
-{%- include tailwind/infograph.html -%}
+## 🐍 Python with Flask
 
-Click a card above to dive deeper into each setup and complete your storage foundation.
+**Key Features**:
+- Run Flask locally  
+- Connect to SQLite  
+- Build simple data endpoints  
+
+**Lightweight and Flexible**  
+A beginner-friendly setup that introduces routing, templating, and database integration using SQLite.
+
+👉 [Set Up →](/student/web-dev/data-storage/python-flask)
+
+---
+
+## ☕ Java with Spring Boot
+
+**Key Features**:
+- Run Spring Boot locally  
+- Use H2 or PostgreSQL  
+- Create simple REST endpoints  
+
+**Powerful and Scalable**  
+A robust Java framework for building APIs and connecting to production-ready databases like PostgreSQL.
+
+👉 [Set Up →](/student/web-dev/data-storage/java-spring)
 
 ---
 
