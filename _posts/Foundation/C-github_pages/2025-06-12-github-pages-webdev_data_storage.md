@@ -7,7 +7,6 @@ description: In this guide, you'll learn about why data storage is used and what
 categories: ['GitHub Pages']
 permalink: /web-dev/data-storage
 type: ccc
-sticky_rank: 1
 ---
 
 # Data Storage Foundations
