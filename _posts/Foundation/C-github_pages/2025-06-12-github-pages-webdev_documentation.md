@@ -21,87 +21,103 @@ This becomes your **hub** for your development journey.
 
 ---
 
-## Step 1: Set Up Your GitHub Pages Repository
+## Step 1: Edit `_config.yml`
 
-1. Create a new repository cloned from template (idk which repo).
-2. Clone it locally and open it in VS Code.
-3. Ensure you have the necessary files:
-   - `_config.yml`
-   - `index.md`
-   - `_posts/` folder
-4. Add your name, short intro, and an image in `index.md`.
+Your `_config.yml` file is the settings file that powers your Jekyll site. You'll find it in the root of your GitHub Pages repository.
+
+### Sample `_config.yml`
+
+Here's a sample to start from:
+
+```yaml
+title: Nighthawk Pages 
+description: "Class of 2025"
+owner_name: John Mortensen
+github_username: vibha1019
+github_repo: "vibha_mandayam" 
+baseurl: "/vibha_mandayam"  
+future: true
+
+remote_theme: jekyll/minima
+minima:
+  skin: dark
+  social_links:
+    - { platform: github, user_url: "https://github.com/nighthawkcoders"}
+    - { platform: x, user_url: "https://x.com/NighthawkCoding/" }
+    - { platform: youtube, user_url: "https://www.youtube.com/@nighthawkcodingsociety2868" }
+
+plugins:
+  - jekyll-remote-theme
+
+minima:
+  nav_pages:
+    - navigation/blog.md
+    - navigation/search.md
+    - navigation/about.md
+    - navigation/tools.md
+    - README4YML.md
+
+```
+
+# What to Customize
+
+**title**: Change to your own name or theme 
+**description**: Describe your site.  
+**owner_name**: Your full name.  
+**github_username**: Your GitHub username.  
+**github_repo**: The name of this GitHub repository.  
+**baseurl**: Should match the repo name, prefixed with `/`.
 
 ---
 
-## Step 2: Customize `index.md`
+# Step 2: Create about.md
 
-Use Markdown syntax:
+Create a file at `navigation/about.md` with the following content:
 
 ```markdown
-# About Me
-
-Hi! I'm [Your Name], a developer at [School].
-
-## My Goals
-- Learn HTML, CSS, and JavaScript
-- Build real-world web applications
-- Collaborate using GitHub
-
-![My Image](images/me.png)
-```
+---
+layout: page
+title: "About Me"
+permalink: /about/
 ---
 
-## Step 3: Add Tools Links
+#  Hello!
 
-Create a list of links or buttons to your tools setup pages (you can use Markdown or HTML).
+I'm Vibha, a student passionate about CS, design, and making cool things with tech. This site documents my projects and learning journey.
 
-### Example (Markdown):
+## Interests
+- AI/ML
+- Full-stack web development
 
-```markdown
-## Developer Toolkit
+## Courses
+- AP Computer Science Principles
+- AP Calc
 
-- [GitHub Setup](/tools/github)
-- [Markdown Basics](/tools/markdown)
-- [Visual Studio Code](/tools/vscode)
-``` 
-
-### Example (HTML Buttons):
-
-```html
-<h2>Developer Toolkit</h2>
-<a href="/tools/github"><button>GitHub</button></a>
-<a href="/tools/markdown"><button>Markdown</button></a>
-<a href="/tools/vscode"><button>VS Code</button></a>
+## Links
+- [My GitHub](https://github.com/vibha1019)
+- [My Resume](#)
 ```
+
 ---
-## Step 4: Deploy to GitHub Pages
 
-### 1. Commit and Push Changes
-First, commit your local changes and push them to GitHub:
+# Step 3: Add the Page to Navigation
 
-```bash
-git add .
-git commit -m "Initial site setup"
-git push origin main
+In `_config.yml`, add this:
+
+```yaml
+minima:
+  nav_pages:
+    - navigation/about.md
 ```
-### 2. Configure GitHub Pages
 
-In your GitHub repository:
+---
 
-1. Navigate to **Settings** → **Pages**
-2. Under "Build and deployment":
-   - **Branch**: Select `main` from dropdown
-   - **Folder**: Select `/(root)`
-3. Click **Save**
+# Step 4: Push Changes and Deploy
 
-### 3. Verify Deployment
+Save your changes  
+Commit and push using VSCode 
+Visit `https://<your-username>.github.io/<your-repo>` to see it live!
 
-- Wait 1-2 minutes for deployment to complete
-- Refresh the page to see the active deployment status
-- A green checkmark will appear when deployment succeeds
+---
+Next: Learn how to use Markdown, link other pages, and add buttons to your homepage.
 
-### 4. Access Your Site
-
-Your site will be live at:
-
-https://<username>.github.io/<repository>

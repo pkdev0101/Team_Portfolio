@@ -1,14 +1,47 @@
-# course 
-Title: "Website Development Foundations"
-Description: "Before diving into full-stack development, start with the essentials. This guide introduces the foundational tools and practices needed to create your About Me page, understand data with Flask and Spring, and data retrieval."
+# course illustrations
+Title: "Website Development: Projects & Personalization"
+Description: "After setting up your tools, Day 2 focuses on building your personal site, exploring creative coding projects, and collaborating through GitHub and VSCode. This is where your developer identity takes shape and you explore what’s possible."
 Topics:
-  - title: "Documenting Tool Setup & About Me"
-    image: "/aboutme.png"
+  - title: "About Me & Home Page"
+    image: "/webdev/aboutme.png"
     link: "/web-dev/documentation"
-    alt: "Documentation and About Me site"
+    alt: "GitHub Pages About Me"
+    subtitle: "Personal Site"
     keyPoints:
-      - "Follow step-by-step guides"
-      - "Create your About Me site"
-      - "Use Markdown and GitHub"
-    subtitle: "Start Here"
-    description: "Begin your journey by reading the course documentation. Learn to create your personal site using GitHub and Markdown while getting comfortable with the development workflow."
+      - "Set up About Me site"
+      - "Link to tools & class"
+      - "Use GitHub Pages"
+    description: "Create a personal website using GitHub Pages. This will be your space to share who you are and organize your development journey."
+
+  - title: "Creative Code Projects"
+    image: "/webdev/games.png"
+    link: "/web-dev/projects"
+    alt: "Snake and Turtle Game"
+    subtitle: "Interactive Fun"
+    keyPoints:
+      - "Edit Python/JS games"
+      - "Customize visuals"
+      - "Practice creativity"
+    description: "Modify Snake or Turtle games in Python or JavaScript to explore coding logic in a fun and creative way."
+
+  - title: "VSCode & Collaboration"
+    image: "/webdev/liveshare.png"
+    link: "/web-dev/collaboration"
+    alt: "VSCode Live Share"
+    subtitle: "Pair Programming"
+    keyPoints:
+      - "Use VSCode Live Share"
+      - "Pair program with others"
+      - "Track commit history"
+    description: "Collaborate with classmates in real time using VSCode Live Share. Learn to track changes, push updates, and work together like real dev teams."
+
+  - title: "Framework Starter Projects"
+    image: "/webdev/frameworks.png"
+    link: "/web-dev/frameworks"
+    alt: "Python Flask and Java Spring"
+    subtitle: "Backend Starters"
+    keyPoints:
+      - "Clone Flask blog"
+      - "Clone Spring starter"
+      - "Customize landing page"
+    description: "Explore how professional developers build using frameworks like Flask (Python) and Spring (Java). Customize starter projects and run them locally."
