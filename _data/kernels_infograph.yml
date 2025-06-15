@@ -4,7 +4,7 @@ Description: "Interactive coding environments that execute code in multiple prog
 Topics:
   - title: "Python Kernel"
     image: "/kernels/pythonkernel.jpg"
-    link: "/lessons/kernels/pythonkernels"
+    link: "/tools/kernels/pythonkernels"
     alt: "Python Kernel"
     keyPoints:
       - "Data analysis and visualization"
@@ -15,7 +15,7 @@ Topics:
     description: "Python kernels excel in data science, automation, and rapid prototyping. With extensive libraries like pandas, numpy, and scikit-learn, Python kernels provide powerful tools for analysis, visualization, and machine learning workflows."
   - title: "HTML/JS Kernel"
     image: "/kernels/htmljskernel.jpg"
-    link: "/lessons/kernels/html-css-js-kernels/"
+    link: "/tools/kernels/html-css-js-kernels/"
     alt: "HTML JavaScript Kernel"
     keyPoints:
       - "Live web development"
@@ -26,7 +26,7 @@ Topics:
     description: "HTML/JS kernels enable real-time web development and testing. Perfect for experimenting with DOM manipulation, CSS styling, and JavaScript functionality in an interactive environment before deploying to production."
   - title: "Java Kernel"
     image: "/kernels/javakernel.jpg"
-    link: "/lessons/kernels/java"
+    link: "/tools/kernels/java"
     alt: "Java Kernel"
     keyPoints:
       - "Object-oriented programming"
