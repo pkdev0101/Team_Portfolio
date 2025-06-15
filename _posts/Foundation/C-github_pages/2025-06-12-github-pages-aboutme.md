@@ -9,62 +9,25 @@ permalink: /web-dev/aboutme
 breadcrumb: True
 ---
 
-##  Overview
+## Overview
 
-In this tutorial, you will:
-- Set up and deploy your personal site using GitHub Pages
-- Create an **About Me** page with Markdown
-- Add a **Tools Hub** page that links to your Day 1 lessons
-- Learn to test on `localhost`, commit with Git, and view on `github.io`
+Welcome! Today we will personalize your GitHub Pages **About Me** site. This is an important step to create a space that represents *you* and your journey as a developer.
 
-This becomes your **hub** for your development journey.
+By the end of this lesson, you will be able to:
 
----
+- Edit your **About Me** page using Markdown  
+- Add images to your site  
+- Test your site locally and deploy it to GitHub Pages  
 
-##  Step 1: Edit `_config.yml`
-
-Your `_config.yml` file is the settings file that powers your Jekyll site.
-
-### Sample `_config.yml`
-
-```yaml
-title: Open Coding 
-description: "Class of 2026"
-owner_name: John Mortensen
-github_username: jm1021 
-github_repo: "stodent" 
-baseurl: "/student" 
-future: true
-remote_theme: jekyll/minima
-minima:
-  skin: dark
-  social_links:
-    - { platform: github, user_url: "https://github.com/open-coding-society" }
-    - { platform: x, user_url: "https://x.com/Open_Coding" }
-    - { platform: youtube, user_url: "https://www.youtube.com/@OpenCodingSociety" } 
-plugins:
-  - jekyll-remote-theme
-  - jekyll-include-cache
-header_pages:
-  - navigation/blog.md
-  - navigation/search.md
-  - navigation/about.md
-  - navigation/logintoolkit.md
-```
-
-### Customize These Fields
-
-- **title**: Change to your name or site theme  
-- **description**: Write a brief tagline or site purpose  
-- **owner_name**: Your full name  
-- **github_username** and **github_repo**: Match your GitHub  
-- **baseurl**: Should be `"/your_repo_name"` (include the slash)
+Let’s get started!
 
 ---
 
-## Step 2: Edit `about.md`
+## Step 1: Edit Your `about.md` File
 
-In the `navigation/` folder, edit `about.md` with content personalized to you:
+1. Open your project folder in VSCode.  
+2. Navigate to the `navigation/` folder and open `about.md`.  
+3. Replace the placeholder content with information about yourself — your interests, courses, and links. Here’s an example snippet:
 
 ```markdown
 ---
@@ -73,66 +36,82 @@ title: "About Me"
 permalink: /about/
 ---
 
-# Hello!
+# Hello! I'm Vibha
 
-I'm Vibha, a student passionate about CS, design, and making cool things with tech. This site documents my projects and learning journey.
+I’m passionate about computer science, design, and building cool projects.
 
 ## Interests
-- AI/ML
-- Full-stack web development
+- AI / Machine Learning  
+- Full-stack Web Development
 
 ## Courses
-- AP Computer Science Principles
-- AP Calc
+- AP Computer Science Principles  
+- AP Calculus
 
 ## Links
-- [My GitHub](https://github.com/vibha1019)
+- [My GitHub](https://github.com/vibha1019)  
 - [My Resume](#)
 ```
+---
+
+## Step 2: Add Images to Your About Page
+
+Images make your page more engaging and personal! Here’s how you can add images correctly.
+
+### Find and Save Your Image
+
+- Search for an image online that represents you or your interests (e.g., a state flag, favorite animal, or personal photo).  
+- Right-click the image and select **Save Image As...**  
+- Save it with a clear name like `default.png` or `profile_pic.png`.
+
+### Organize Your Image Files
+
+- Move or copy your downloaded image into the `images` folder.
+
+Your project should look like this:
+![Alt text]({{ site.baseurl }}/images/imagesdir.png)
+
+### Link Images in Markdown with `{% raw %}{{ site.baseurl }}{% endraw %}`
+
+Use this syntax in your Markdown to ensure images work:
+
+{% raw %}
+`{{ site.baseurl }}/images/default.png`
+{% endraw %}
+
+---
+Take some time to try this yourself.
+
+By now, you should have personalized your About Me page with your own interests and added at least one image that represents you.
+
 
 ---
 
-## Step 3: Create `tools.md` for Your Hub
+## Step 3: Test Your Site Locally
 
-Also inside `navigation/`, create `tools.md` to link your lessons:
+Before pushing your changes to GitHub, it’s a good idea to preview your site on your computer.
 
-```markdown
----
-layout: page
-title: Tools Hub
-permalink: /tools/
----
+1. Open your terminal in VSCode
+2. Run the command:  
+   ```bash
+   make
+   ```
+3. This will build your site and start a local server (http://127.0.0.1:4600/student/)
 
-# Tools Hub
-
-Welcome to my tools hub! Here are links to my key setup guides and lessons:
-
-- [VS Code Setup](/posts/vscode-setup)
-- [GitHub Pages Guide](/web-dev/documentation)
-- [Git Commands](/posts/git-commands)
-```
-
-You can update these links to point to your actual posts or tools lessons.
+4. Open your browser and go to that address to see your site with your latest changes.
 
 ---
 
-## Step 4: Commit & Sync Your Changes
+## Step 4: Commit & Sync Your Changes to GitHub
 
-Once everything’s in place, you need to **commit** your changes and **sync** them to GitHub using VSCode.
+Once you’re happy with how your site looks locally, push your changes so everyone can see them online.
 
 ### In VSCode:
-1. Open the **Source Control** tab (🔃 icon on the left).
-2. Stage all changes.
-3. Write a commit message (e.g., `initial setup`), then click ✔ **Commit**.
-4. Click the **Sync Changes** button to push your commit to GitHub.
 
-You can also run:
+1. Click on the **Source Control** tab (the icon with the branch or 🔃).  
+2. Stage all your changes (click the "+" next to changed files or use **Stage All**).  
+3. Write a clear commit message like: **Personalize About Me page**
+4. Click the ✔️ **Commit** button.  
+5. Click the **Sync Changes** button to push your commit to GitHub.
 
-```bash
-make 
-```
-to test the site locally.
-
-
-
-
+Once synced, your updated About Me page will be live on your GitHub Pages site!
