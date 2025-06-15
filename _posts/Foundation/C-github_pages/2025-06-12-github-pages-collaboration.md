@@ -56,10 +56,9 @@ Pair programming is when two developers work together at one workstation — one
 
 #### Pair Program When…
 
-- Working on tricky features like auth or backend logic
+- Working on tricky features
 - Debugging something complex
 - Reviewing code before a big push
-
 
 ---
 
@@ -88,54 +87,50 @@ Version control is your safety net for team coding.
 
 - **Kanban Boards**: for task tracking  
   [GitHub Projects (Kanban)](https://docs.github.com/en/issues/organizing-your-work-with-project-boards)  
-
-- **Commits**: Use them to verify team contributions (use GitHub Insights or terminal logs)  
 --- 
 
-## Collaboration Hack: Hobbies Showcase
+## Collaborative Blog Post in about.md with VSCode Live Share
 
-Now that you've learned how to use VSCode Live Share and personalize your `about.md` page, let’s make it more fun — together.
+### Purpose  
+Practice real-time collaboration by writing and styling a short blog post together about something you both have in common.
 
-In this mini-hack, you'll work in **pairs** to design a creative section that showcases your hobbies or interests.
+### How It Works
 
-### What You’ll Build
+1. **Chat In Person First**  
+Talk to your partner about something you both enjoy — a favorite sport, hobby, subject, or interest.
 
-A new section in your `about.md` page called **My Hobbies** that includes:
+2. **Start a Live Share Session**  
+One partner starts VSCode Live Share and shares the invite link.
 
-- 3 to 5 hobbies or interests
-- A small image for each hobby
-- A short caption or sentence describing why it matters to you
-- Optional: Emojis, colors, layout tweaks (inline styles)
+3. **Open the `about.md` file together**
 
-### How to Work Together
+4. **Write Together**  
+In the same file, write a short blog post (2-3 sentences) about the shared interest.
 
-- Use **VSCode Live Share** to collaborate in real time
-- One person can write the code while the other helps with design/layout
-- Switch roles halfway through!
+5. **Add a Picture**  
+Include a relevant image in the `images/` folder and embed it with inline styles to adjust the size or layout.
 
-### Your Image Folder
+6. **Add Fun Styles**  
+Use inline CSS styles inside your markdown (e.g., colors, margins, borders) to make your post visually appealing.
 
-Make sure your images are saved in the `images/` folder.
+7. **Switch Roles**  
+One person can write content while the other styles, then swap.
 
+8. **Review Your Work Together**  
+Talk about what you added and how the styles improve the look.
 
-###  Sample Code Snippet
+---
 
-Add this to your `about.md` below your intro:
+### Example
 
 ```markdown
-## My Hobbies
+## Our Shared Passion: Basketball
 
-### Swimming  
-<img src="{{ site.baseurl }}/images/swimming.jpg" alt="Swimming" style="width:150px;">
-I love to swim laps at my local pool — it's my go-to for stress relief.
+Basketball is an exciting game we both love. It’s fast-paced and helps us stay active.
 
-### Reading  
-<img src="{{ site.baseurl }}/images/reading.png" alt="Reading" style="width:150px;">
-Reading novels helps me recharge and get inspired.
+<img src="{{ site.baseurl }}/images/basketball.png" alt="Basketball" style="width:150px; border-radius: 10px; margin: 10px;">
 
-### Baking  
-<img src="{{ site.baseurl }}/images/baking.svg" alt="Baking" style="width:150px;">
-Baking lets me get creative in the kitchen and share treats with friends.
+We enjoy playing and watching games, especially during the playoffs!
 ```
 
 ---
