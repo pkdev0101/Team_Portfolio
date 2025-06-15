@@ -59,8 +59,8 @@ The KASM Workspace already includes most tools. Just run the setup script.
 cd
 mkdir opencs 
 cd opencs 
-git clone https://github.com/open-coding-society/pages.git
-cd opencs/pages/scripts
+git clone https://github.com/open-coding-society/student.git
+cd opencs/student/scripts
 ./activate.sh
 ```
 
