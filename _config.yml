@@ -3,7 +3,7 @@ description: "Class of 2026"
 owner_name: Yash Parikh
 github_username: illuminati1618 
 github_repo: "studentsummer1" 
-baseurl: "/student" 
+baseurl: "/studentsummer1" 
 future: true
 remote_theme: jekyll/minima
 minima:
