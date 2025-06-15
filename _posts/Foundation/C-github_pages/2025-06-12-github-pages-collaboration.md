@@ -84,11 +84,12 @@ Version control is your safety net for team coding.
 
 - **GitHub**: Push/pull, open issues, and assign tasks  
   [GitHub Docs - About GitHub](https://docs.github.com/en/get-started/quickstart/github-flow)  
-
 - **Kanban Boards**: for task tracking  
-  [GitHub Projects (Kanban)](https://docs.github.com/en/issues/organizing-your-work-with-project-boards)  
---- 
+  [GitHub Projects (Kanban)](https://docs.github.com/en/issues/organizing-your-work-with-project-boards)
 
+---
+
+ç
 ## Collaborative Blog Post in about.md with VSCode Live Share
 
 ### Purpose  
