@@ -5,7 +5,7 @@ data: web-dev
 title: GitHub Pages About Me & Tools Hub
 description: In this guide, you'll set up your personal About Me site using GitHub Pages and create a homepage to organize and link to your Day 1 tools lessons. By the end, you'll have a deployed website that documents your development setup and serves as a launchpad for future projects.
 categories: ['GitHub Pages']
-permalink: /web-dev/documentation
+permalink: /web-dev/aboutme
 breadcrumb: True
 ---
 
@@ -28,30 +28,28 @@ Your `_config.yml` file is the settings file that powers your Jekyll site.
 ### Sample `_config.yml`
 
 ```yaml
-title: Nighthawk Pages 
-description: "Class of 2025"
+title: Open Coding 
+description: "Class of 2026"
 owner_name: John Mortensen
-github_username: vibha1019
-github_repo: "vibha_mandayam" 
-baseurl: "/vibha_mandayam"  
+github_username: jm1021 
+github_repo: "stodent" 
+baseurl: "/student" 
 future: true
-
 remote_theme: jekyll/minima
-plugins:
-  - jekyll-remote-theme
-
 minima:
   skin: dark
   social_links:
-    - { platform: github, user_url: "https://github.com/nighthawkcoders"}
-    - { platform: x, user_url: "https://x.com/NighthawkCoding/" }
-    - { platform: youtube, user_url: "https://www.youtube.com/@nighthawkcodingsociety2868" }
-
-  nav_pages:
-    - navigation/blog.md
-    - navigation/search.md
-    - navigation/about.md
-    - navigation/tools.md
+    - { platform: github, user_url: "https://github.com/open-coding-society" }
+    - { platform: x, user_url: "https://x.com/Open_Coding" }
+    - { platform: youtube, user_url: "https://www.youtube.com/@OpenCodingSociety" } 
+plugins:
+  - jekyll-remote-theme
+  - jekyll-include-cache
+header_pages:
+  - navigation/blog.md
+  - navigation/search.md
+  - navigation/about.md
+  - navigation/logintoolkit.md
 ```
 
 ### Customize These Fields
@@ -117,20 +115,24 @@ Welcome to my tools hub! Here are links to my key setup guides and lessons:
 You can update these links to point to your actual posts or tools lessons.
 
 ---
-## Step 4: Push & Deploy
 
-Once everything’s in place:
+## Step 4: Commit & Sync Your Changes
+
+Once everything’s in place, you need to **commit** your changes and **sync** them to GitHub using VSCode.
+
+### In VSCode:
+1. Open the **Source Control** tab (🔃 icon on the left).
+2. Stage all changes.
+3. Write a commit message (e.g., `initial setup`), then click ✔ **Commit**.
+4. Click the **Sync Changes** button to push your commit to GitHub.
+
+You can also run:
 
 ```bash
-make     
+make 
 ```
+to test the site locally.
 
 
-Visit:  
-```
-https://<your-username>.github.io/<your-repo>/
-```
-
----
 
 

@@ -4,7 +4,7 @@ Description: "After setting up your tools, Day 2 focuses on building your person
 Topics:
   - title: "Documentation"
     image: "/webdev/aboutme.png"
-    link: "/web-dev/documentation"
+    link: "/web-dev/aboutme"
     alt: "GitHub Pages About Me"
     subtitle: "Personal Site"
     keyPoints:
