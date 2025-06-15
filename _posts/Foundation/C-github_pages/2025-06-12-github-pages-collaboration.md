@@ -69,18 +69,27 @@ Version control is your safety net for team coding.
 
 ### Git Concepts to Know
 
-- **Branching**: Work independently without breaking main
-- **Pull requests**: Share and review changes before merging
-- **Commit messages**: Make them clear and specific (`feat: add navbar`, `fix: login redirect`)
-- **Conflict resolution**: Use VSCode’s merge tools and communicate often
+- **Branching**: Work independently without breaking main  
+  [Git Branching Basics](https://www.atlassian.com/git/tutorials/using-branches)  
+
+- **Pull requests**: Share and review changes before merging  
+  [About Pull Requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests)  
+
+- **Commit messages**: Make them clear and specific (`feat: add navbar`, `fix: login redirect`)  
+  [Writing Good Commit Messages](https://chris.beams.io/posts/git-commit/) *(third-party guide widely recommended)*  
+
+- **Conflict resolution**: Use VSCode’s merge tools and communicate often  
+  [Resolving a merge conflict using the command line](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts)  
 
 ### Tools to Use
 
-- **GitHub**: Push/pull, open issues, and assign tasks
-- **Kanban Boards**: for task tracking
-- **Commits**: Use them to verify team contributions (use GitHub Insights or terminal logs)
+- **GitHub**: Push/pull, open issues, and assign tasks  
+  [GitHub Docs - About GitHub](https://docs.github.com/en/get-started/quickstart/github-flow)  
 
+- **Kanban Boards**: for task tracking  
+  [GitHub Projects (Kanban)](https://docs.github.com/en/issues/organizing-your-work-with-project-boards)  
 
+- **Commits**: Use them to verify team contributions (use GitHub Insights or terminal logs)  
 --- 
 
 ## Collaboration Hack: Hobbies Showcase
