@@ -8,3 +8,7 @@ pandas
 seaborn
 scikit-learn
 progress
+newspaper3k
+wikipedia
+emoji
+lxml_html_clean
