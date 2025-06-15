@@ -80,3 +80,87 @@ Version control is your safety net for team coding.
 - **Kanban Boards**: for task tracking
 - **Commits**: Use them to verify team contributions (use GitHub Insights or terminal logs)
 
+
+--- 
+
+## Collaboration Hack: Hobbies Showcase
+
+Now that you've learned how to use VSCode Live Share and personalize your `about.md` page, let’s make it more fun — together.
+
+In this mini-hack, you'll work in **pairs** to design a creative section that showcases your hobbies or interests.
+
+### What You’ll Build
+
+A new section in your `about.md` page called **My Hobbies** that includes:
+
+- 3 to 5 hobbies or interests
+- A small image for each hobby
+- A short caption or sentence describing why it matters to you
+- Optional: Emojis, colors, layout tweaks (inline styles)
+
+### How to Work Together
+
+- Use **VSCode Live Share** to collaborate in real time
+- One person can write the code while the other helps with design/layout
+- Switch roles halfway through!
+
+### Your Image Folder
+
+Make sure your images are saved in the `images/` folder.
+
+
+###  Sample Code Snippet
+
+Add this to your `about.md` below your intro:
+
+```markdown
+## My Hobbies
+
+### Swimming  
+<img src="{{ site.baseurl }}/images/swimming.jpg" alt="Swimming" style="width:150px;">
+I love to swim laps at my local pool — it's my go-to for stress relief.
+
+### Reading  
+<img src="{{ site.baseurl }}/images/reading.png" alt="Reading" style="width:150px;">
+Reading novels helps me recharge and get inspired.
+
+### Baking  
+<img src="{{ site.baseurl }}/images/baking.svg" alt="Baking" style="width:150px;">
+Baking lets me get creative in the kitchen and share treats with friends.
+```
+
+---
+
+## Quick Intro to CSS Styling
+
+CSS (Cascading Style Sheets) lets you control how your content looks — size, color, spacing, layout, and more!
+
+In this project, you’ll use **inline CSS**, which means writing style rules directly inside your HTML elements.
+
+### Syntax Example
+
+```html
+<img src="{{ site.baseurl }}/images/baking.png" alt="Baking" style="width:150px;">
+```
+
+`style="..."` goes inside your HTML tag.
+
+`width:150px;` makes the image 150 pixels wide.
+
+You can also add other styles like:
+
+```html
+style="border-radius: 10px; margin: 10px; box-shadow: 2px 2px 5px gray;"
+```
+
+### Try It!
+
+Add styles like these to your `about.md` content:
+
+- Change the size of an image  
+- Add space around a heading  
+- Make a heading a different color:
+
+```html
+<h2 style="color: teal;">My Hobbies</h2>
+```
