@@ -59,9 +59,12 @@ The KASM Workspace already includes most tools. Just run the setup script.
 cd
 mkdir opencs 
 cd opencs 
-git clone https://github.com/open-coding-society/student.git
+git clone https://github.com/{your_username}/student.git
 cd opencs/student/scripts
 ./activate.sh
+source ~/.bashrc
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
 ---
@@ -73,6 +76,33 @@ bundle -v
 python --version
 jupyter --version
 ```
+
+---
+
+## What is `make`?
+
+Think of `make` as a smart **task helper** for developers.
+
+* It **automates commands** you would normally type one by one.
+* It looks at a special file called a **Makefile**, which lists tasks and how to run them.
+* You just type `make`, and it runs everything for you: like starting a server, converting files, or cleaning up.
+
+### Example:
+
+Instead of running:
+
+```bash
+bundle exec jekyll serve
+python3 my_script.py
+```
+
+You can just run:
+
+```bash
+make
+```
+
+And it will do all of that for you automatically based on the commands in the `Makefile`.
 
 
 {% include slim_sidebar.html %}
