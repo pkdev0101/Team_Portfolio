@@ -50,7 +50,7 @@ search_exclude: true
             if (response.redirected) {
                 window.location.href = response.url; // Redirect as per response
             } else if (response.ok) {
-                window.location.href = "{{site.baseurl}}/toolkit-login";
+                window.location.href = "{{site.baseurl}}/login";
             } else {
                 console.error('Logout failed:', response.statusText);
             }
