@@ -57,9 +57,35 @@
         </div>
     </div>
 
+    <script type="module">
+    import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+
+    window.sendToGroqAPI = async function (userMessage) {
+        try {
+            const response = await fetch(`${pythonURI}/api/groq`, {
+                ...fetchOptions,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    messages: [
+                        { role: "user", content: userMessage }
+                    ]
+                })
+            });
+
+            if (!response.ok) throw new Error(`Groq API failed: ${response.status}`);
+            const data = await response.json();
+            return data.choices[0].message.content;
+        } catch (error) {
+            console.error('Error contacting Groq API:', error);
+            return "⚠️ Error generating question.";
+        }
+    };
+    </script>
+
     <script>
-        const API_URL = "https://api.groq.com/openai/v1/chat/completions";
-        const API_KEY = "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";
         
         let askedQuestions = [];
         let currentQuestion = null;
@@ -70,35 +96,6 @@
                 return lessonElement.innerText || lessonElement.textContent || '';
             }
             return "Functions in programming are reusable blocks of code that perform specific tasks. They help organize code and avoid repetition.";
-        }
-
-        async function sendToGroqAPI(userMessage, maxRetries = 3) {
-            for (let attempt = 0; attempt < maxRetries; attempt++) {
-                try {
-                    const response = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${API_KEY}`
-                        },
-                        body: JSON.stringify({
-                            model: "llama3-8b-8192",
-                            messages: [{ role: "user", content: userMessage }],
-                            temperature: 0.7
-                        })
-                    });
-                    
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    const data = await response.json();
-                    return data.choices[0].message.content;
-                } catch (error) {
-                    console.error(`Attempt ${attempt + 1} failed:`, error);
-                    if (attempt === maxRetries - 1) {
-                        return "Error: Unable to generate question. Please try again.";
-                    }
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
-            }
         }
 
         function extractJSON(text) {
