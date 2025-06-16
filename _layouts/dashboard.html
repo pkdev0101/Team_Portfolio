@@ -19,11 +19,6 @@ active_tab: Dashboard
                         aria-current="page">GitHub Analytics</a>
                 </li>
                 <li class="me-2">
-                    <a href="#" id="tab-bathroom"
-                        class="tab-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-neutral-300 hover:text-neutral-300">Bathroom
-                        Analytics</a>
-                </li>
-                <li class="me-2">
                     <a href="#" id="tab-grade"
                         class="tab-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-neutral-300 hover:text-neutral-300">Grade
                         Predictor</a>
@@ -33,15 +28,15 @@ active_tab: Dashboard
                     class="tab-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-neutral-300 hover:text-neutral-300">Admin Search</a>
                 </li>
                 <li class="me-2">
+                    <a href="#" id="tab-grade-analytics"
+                        class="tab-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-neutral-300 hover:text-neutral-300">Grade
+                        Analytics</a>
+                </li>
+                <li class="me-2">
                     <a href="#" id="tab-help"
                         class="tab-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-neutral-300 hover:text-neutral-300">
                        ⓘ Help 
                     </a>
-                </li>
-                <li class="me-2">
-                    <a href="#" id="tab-grade-analytics"
-                        class="tab-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-neutral-300 hover:text-neutral-300">Grade
-                        Analytics</a>
                 </li>
             </ul>
             <!-- sliding underline indicator -->
@@ -124,15 +119,6 @@ active_tab: Dashboard
 
                 <!-- Commit Cards Container -->
                 <div id="commitCardsContainer" class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-            </div>
-
-            <!-- bathroom analytics tab content -->
-            <div id="tab-content-bathroom" class="tab-content hidden">
-                <div class="items-center justify-center text-neutral-300 p-8 text-center">
-                    <p>Legally correct, morally questionable: it's bathroom analytics!</p>
-                    <br />
-                    <p>Wow, it's so empty here. Maybe something will come up soon...?</p>
-                </div>
             </div>
 
             <!-- grade predictor tab content -->
@@ -639,11 +625,34 @@ active_tab: Dashboard
         });
     });
 
-    // Initialize underline position on load for active tab
-    window.onload = () => {
+    async function checkAdminAndToggleTab() {
+        try {
+            const res = await fetch(`${pythonURI}/api/id`, fetchOptions);
+            if (!res.ok) throw new Error("Failed to fetch user info");
+
+            const user = await res.json();
+            const isAdmin = user.role === "Admin";
+
+            const adminTab = document.getElementById("tab-admin-search");
+            const adminTabContent = document.getElementById("tab-content-admin-search");
+
+            if (!isAdmin) {
+                adminTab?.remove();
+                adminTabContent?.remove();
+            }
+        } catch (err) {
+            console.error("Error checking admin status:", err);
+        }
+    }
+
+    // Call after fetching GitHub data
+    window.onload = async () => {
+        await checkAdminAndToggleTab(); 
         const activeTab = document.querySelector(".tab-btn.active");
         if (activeTab) setUnderline(activeTab);
-        fetchData();
+
+        await fetchData();
+
     };
 </script>
 
@@ -654,7 +663,7 @@ active_tab: Dashboard
     // call the function with your tab ids and initial tab
     document.addEventListener('DOMContentLoaded', function () {
         setupTabSwitcher(
-            ['github', 'bathroom', 'grade', 'admin-search', 'help', 'grade-analytics'],
+            ['github', 'grade', 'admin-search', 'help', 'grade-analytics'],
             'github'
             );
     });
