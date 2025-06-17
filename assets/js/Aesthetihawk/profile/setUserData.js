@@ -14,8 +14,8 @@ export async function setUserData() {
         const emailInput = document.getElementById("emailChangeInput");  // email
         const sidInput = document.getElementById("sidChangeInput");      // canvas id
         const kasmCheckbox = document.getElementById("kasmChangeInput"); // do you need kasm?
-        const sidebar = document.getElementById("sidebarWelcome");       // sidebar welcome message
-        const sidebarPfp = document.getElementById("sidebarPfp");        // sidebar profile picture
+        //const sidebar = document.getElementById("sidebarWelcome");       // sidebar welcome message
+        //const sidebarPfp = document.getElementById("sidebarPfp");        // sidebar profile picture
 
 
         nameInput.value = name ? name : "Failed to load name. Are you logged in?";
@@ -23,7 +23,7 @@ export async function setUserData() {
         emailInput.value = email ? email : "Failed to load email. Are you logged in?";
         sidInput.value = sid ? sid : "Failed to load SID. Are you logged in?";
         kasmCheckbox.checked = kasm;
-        sidebar.innerHTML = 'Welcome,<br>' + name;
+        //sidebar.innerHTML = 'Welcome,<br>' + name;
         sidebarPfp.src = pfp ? pfp : "{{site.baseurl}}/images/default.png"
     } catch (error) {
         console.error("error setting placeholders:", error.message);
