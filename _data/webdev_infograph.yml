@@ -1,58 +1,86 @@
-# course illustrations
 Title: "Website Development: Projects & Personalization"
 Description: "After setting up your tools, Day 2 focuses on building your personal site, exploring creative coding projects, and collaborating through GitHub and VSCode. This is where your developer identity takes shape and you explore what’s possible."
 Topics:
-  - title: "Documentation"
-    image: "/webdev/aboutme.png"
-    link: "/web-dev/aboutme"
-    alt: "GitHub Pages About Me"
-    subtitle: "Personal Site"
-    keyPoints:
-      - "Set up About Me site"
-      - "Link to tools & class"
-      - "Use GitHub Pages"
-    description: "Create a personal website using GitHub Pages. This will be your space to share who you are and organize your development journey."
+ - title: "Introduction to Markdown"
+   image: "/webdev/markdown.png"
+   link: "/web-dev/intro-to-markdown"
+   alt: "Learn how to write clean, readable content using Markdown syntax."
+   keyPoints:
+     - "Master headings, lists, links, and images"
+     - "Use code blocks and blockquotes"
+     - "Create tables and checklists for better organization"
+   subtitle: "Write Clear Documentation"
+   description: "Get started with Markdown to create well-structured text documents for web pages, READMEs, and notes."
 
-  - title: "VSCode & Collaboration"
-    image: "/webdev/liveshare.png"
-    link: "/web-dev/collaboration"
-    alt: "VSCode Live Share"
-    subtitle: "Pair Programming"
-    keyPoints:
-      - "Use VSCode Live Share"
-      - "Pair program with others"
-      - "Track commit history"
-    description: "Collaborate with classmates in real time using VSCode Live Share. Learn to track changes, push updates, and work together like real dev teams."
 
-  - title: "Data Storage"
-    image: "/webdev/datastorage.png"
-    link: "/web-dev/data-storage"
-    alt: "Learn how websites store information using databases like SQLite."
-    keyPoints:
-      - "Explore relational and non-relational databases"
-      - "Understand how Flask and Spring connect to databases"
-      - "Set up and query a basic database"
-    subtitle: "Store Information"
-    description: "Learn about how web apps store data. Explore types of databases and how backend frameworks like Flask and Spring interact with them."
+ - title: "Documentation"
+   image: "/webdev/aboutme.png"
+   link: "/web-dev/aboutme"
+   alt: "GitHub Pages About Me"
+   subtitle: "Personal Site"
+   keyPoints:
+     - "Set up About Me site"
+     - "Link to tools & class"
+     - "Use GitHub Pages"
+   description: "Create a personal website using GitHub Pages. This will be your space to share who you are and organize your development journey."
 
-  - title: "Data Retrieval"
-    image: "/webdev/dataretrieval.png"
-    link: "/web-dev/data-retrieval"
-    alt: "Learn to fetch and display data dynamically from the backend to the frontend."
-    keyPoints:
-      - "Integrate backend storage with frontend interfaces"
-      - "Use APIs to send and receive data"
-      - "Build dynamic web pages using retrieved data"
-    subtitle: "Build Functional Websites"
-    description: "Learn how full-stack applications retrieve and display data. Understand how to build endpoints, query your database, and present results on your site."
 
-  - title: "Creative Code Projects"
-    image: "/webdev/games.png"
-    link: "/web-dev/projects"
-    alt: "Snake and Turtle Game"
-    subtitle: "Interactive Fun"
-    keyPoints:
-      - "Edit Python/JS games"
-      - "Customize visuals"
-      - "Practice creativity"
-    description: "Modify Snake or Turtle games in Python or JavaScript to explore coding logic in a fun and creative way."
+ - title: "VSCode & Collaboration"
+   image: "/webdev/liveshare.png"
+   link: "/web-dev/collaboration"
+   alt: "VSCode Live Share"
+   subtitle: "Pair Programming"
+   keyPoints:
+     - "Use VSCode Live Share"
+     - "Pair program with others"
+     - "Track commit history"
+   description: "Collaborate with classmates in real time using VSCode Live Share. Learn to track changes, push updates, and work together like real dev teams."
+
+
+ - title: "Creative Code Projects"
+   image: "/webdev/games.png"
+   link: "/web-dev/projects"
+   alt: "Snake and Turtle Game"
+   subtitle: "Interactive Fun"
+   keyPoints:
+     - "Edit Python/JS games"
+     - "Customize visuals"
+     - "Practice creativity"
+   description: "Collaborate with classmates in real time using VSCode Live Share. Learn to track changes, push updates, and work together like real dev teams."
+
+  
+ - title: "Flask Portfolio Starter"
+   image: "/webdev/flask.png"
+   link: "/web-dev/flask-starter"
+   alt: "Flask Server Project"
+   subtitle: "Backend & Databases"
+   keyPoints:
+     - "Clone a Flask starter repo"
+     - "Run local server with VSCode"
+     - "Explore SQLite user data"
+   description: "Modify Snake or Turtle games in Python or JavaScript to explore coding logic in a fun and creative way."
+  
+ - title: "Data Storage"
+   image: "/webdev/datastorage.png"
+   link: "/web-dev/data-storage"
+   alt: "Learn how websites store information using databases like SQLite."
+   keyPoints:
+     - "Explore relational and non-relational databases"
+     - "Understand how Flask and Spring connect to databases"
+     - "Set up and query a basic database"
+   subtitle: "Store Information"
+   description: "Learn about how web apps store data. Explore types of databases and how backend frameworks like Flask and Spring interact with them."
+
+
+ - title: "Data Retrieval"
+   image: "/webdev/dataretrieval.png"
+   link: "/web-dev/data-retrieval"
+   alt: "Learn to fetch and display data dynamically from the backend to the frontend."
+   keyPoints:
+     - "Integrate backend storage with frontend interfaces"
+     - "Use APIs to send and receive data"
+     - "Build dynamic web pages using retrieved data"
+   subtitle: "Build Functional Websites"
+   description: "Learn how full-stack applications retrieve and display data. Understand how to build endpoints, query your database, and present results on your site."
+
+
