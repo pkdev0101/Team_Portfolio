@@ -6,6 +6,7 @@ title: Data Retrieval Foundations
 description: Discover how full-stack applications deliver live data to users by connecting frontend interfaces with backend servers and databases. Learn to build dynamic web pages that fetch and display real information in real time.
 categories: ['GitHub Pages']
 permalink: /web-dev/data-retrieval
+breadcrumb: True
 ---
 
 ## Overview

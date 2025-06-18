@@ -7,6 +7,7 @@ description: In this guide, you'll learn a brief introduction to models + api an
 categories: ['GitHub Pages']
 permalink: /web-dev/data-storage
 type: ccc
+breadcrumb: True
 ---
 
 # What Does Full Stack Mean?

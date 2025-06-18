@@ -6,6 +6,7 @@ description: This guide will walk you through setting up a Flask project with lo
 categories: ['GitHub Pages']
 permalink: /web-dev/data-storage/python-flask
 type: ccc
+breadcrumb: True
 ---
 
 ## 1. Clone the Starter Repository

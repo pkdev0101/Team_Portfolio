@@ -6,6 +6,7 @@ description: Learn how to build a backend using Spring Boot with simple database
 categories: ['GitHub Pages']
 permalink: /web-dev/data-storage/java-spring
 type: ccc
+breadcrumb: True
 ---
 
 ## 1. Clone the Starter Repository
@@ -49,13 +50,14 @@ Test endpoints using Postman or a frontend.
 - Deploy to platforms like Heroku, Render, or AWS
 - Add the .env (if needed)
   
-
 ---
+
 ## 🗂️ What Is a `.env` File?
 
 A `.env` file (short for "environment") is a plain text file used to store **environment variables**—settings your app needs to run, like passwords, API keys, and config flags.
 
-### ✅ It's used to:
+### ✅ It's used to
+
 - Hide **private info** from your source code
 - Customize **behavior** based on the environment (dev, test, prod)
 - Make your codebase **easier to manage and share**
@@ -65,12 +67,14 @@ A `.env` file (short for "environment") is a plain text file used to store **env
 ## 🔐 What Goes in a `.env` File?
 
 Only things that are:
+
 - **Configurable** (can change based on environment)
 - **Sensitive** (should be kept secret)
 - **Not part of your source code logic**
 
-### Examples:
-~~~
+### Examples
+
+```shell
 # Database credentials
 DB_USER=admin
 DB_PASSWORD=mysecurepassword
@@ -81,22 +85,29 @@ STRIPE_API_KEY=pk_live_123456
 # Flags and settings
 DEBUG=True
 ENV=development
-~~~
+```
+
 ### 🚫 What Shouldn't Go in a .env File?
+
 Avoid putting:
+
 - Code or functions
 - Static content (like text strings or styles)
 - Information that’s already public or safe to expose
+
 ## 🚫 Why You Should Avoid Global Variables for Secrets
 
 ### 🤔 What Is a Global Variable?
+
 A **global variable** is defined outside of any function or class and can be accessed anywhere in your code.
 
-### ❌ Example of Bad Practice:
-~~~
+### ❌ Example of Bad Practice
+
+```shell
 # BAD PRACTICE: hardcoding secrets in global variables
 API_KEY = "sk_live_123456"
-~~~
+```
+
 | Problem                  | Why It’s Bad                                                           |
 | ------------------------ | ---------------------------------------------------------------------- |
 | 🔓 **Security Risk**     | Secrets are visible if your code is shared or uploaded (e.g., GitHub). |
@@ -117,4 +128,3 @@ API_KEY = "sk_live_123456"
 
 - 🧼 **Makes your app cleaner, safer, and more professional**  
   Your code stays organized, secure, and easier to maintain.
-
