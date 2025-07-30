@@ -63,7 +63,7 @@ You’ll use standard Unix shell commands:
 git clone https://github.com/open-coding-society/student.git
 cd student
 chmod +x ./scripts/initialize_macos.sh
-./scripts/initialize_macos.sh
+./scripts/activate_macos.sh
 ```
 ---
 
