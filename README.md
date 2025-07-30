@@ -102,7 +102,7 @@ cd <repo-dir>/scripts # cd student
 
 #### Kasm Cloud Desktop Users
 
-- Execute the script: `./activate.sh`
+- Execute the script: `./activate_github.sh`
 
 ## Run Server on localhost
 

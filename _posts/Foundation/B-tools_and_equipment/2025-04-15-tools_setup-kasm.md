@@ -61,7 +61,7 @@ mkdir opencs
 cd opencs 
 git clone https://github.com/{your_username}/student.git
 cd opencs/student/scripts
-./activate.sh
+./activate_github.sh
 source ~/.bashrc
 source venv/bin/activate
 pip install -r requirements.txt
