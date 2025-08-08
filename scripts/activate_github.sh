@@ -9,6 +9,6 @@ git config --global user.name "$GIT_USER_NAME"
 git config --global user.email "$GIT_USER_EMAIL"
 
 echo ""
-echo "✅ Git and Bundler configuration complete."
+echo "✅ Git configuration complete."
 echo "Git User: $(git config --global user.name)"
 echo "Git Email: $(git config --global user.email)"
