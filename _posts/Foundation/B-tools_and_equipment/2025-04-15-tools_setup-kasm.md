@@ -50,51 +50,36 @@ Welcome to your journey of setting up your Operating System and Tools! This setu
 * **List installed packages:** `apt list --installed`
 
 ---
-
-## 🚀 KASM Workspace Setup (Ubuntu Noble / Kali)
+##  KASM Workspace Setup (Ubuntu Noble / Kali)
 
 Thanks to improvements in the KASM image, getting started is fast and simple.
 
-### ✅ First-time setup
+### First-time setup
 
 ```bash
-mkdir open
-cd open
-git clone https://github.com/Open-Coding-Society/pages.git
-cd pages/
-pagesenv
-bundle install
+mkdir opencs
+cd opencs
+git clone https://github.com/Open-Coding-Society/student.git
+cd student/
+./scripts/venv.sh
 code .
 make
 ```
 
-## ✅ Activate Script
+During the `./scripts/venv.sh` run, you will be prompted to enter your Git username and email to configure your Git commit identity. This only happens if Git is not already configured globally.
 
-There is a setup script called `activate_github.sh` in your `pages/scripts` folder with:
+---
 
-```bash
-# Git identity setup
-git config --global user.name {USER_NAME}
-git config --global user.email {EMAIL}
+###  After restarting a session
 
-# Persist gem installation path
-bundle config set --local path './.bundle'
-```
-
-Run this script to setup Git config and ensure Gem installation is persistent across sessions.
-
-
-### 🔁 After restarting a session
-
-Even after a destroy, your data persists. Just relaunch with:
+Your data persists even after workspace restarts or destroys. Simply relaunch your environment and run:
 
 ```bash
-cd open/pages
-pagesenv
+cd opencs/student
+source venv/bin/activate
 code .
 make
 ```
-
 ---
 
 ## Version Checks
