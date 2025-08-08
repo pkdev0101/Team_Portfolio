@@ -20,7 +20,7 @@ Topics:
     keyPoints:
       - "Launch Linux containers in browser"
       - "Access pre-installed tools"
-      - "Run setup script activate_github.sh"
+      - "Run setup script ./scripts/venv.sh"
       - "Use terminal for all coding"
     subtitle: "Browser-based Linux"
     description: "Kasm is a container-based workspace perfect for Chromebooks or locked-down devices. With an Ubuntu terminal, browser-based VSCode, and one-click access to a dev-ready environment, students can code without installing software locally. Run `activate_github.sh` to complete your tool setup."
