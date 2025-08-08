@@ -17,7 +17,6 @@ echo "Git User: $(git config --global user.name)"
 echo "Git Email: $(git config --global user.email)"
 echo "Bundler Path: $(bundle config get path)"
 
-# Ask if user wants to authenticate with GitHub
 read -p "Do you want to log in to GitHub now for push/pull? (y/n): " LOGIN_CHOICE
 if [[ "$LOGIN_CHOICE" =~ ^[Yy]$ ]]; then
     # Install GitHub CLI if missing
@@ -26,8 +25,8 @@ if [[ "$LOGIN_CHOICE" =~ ^[Yy]$ ]]; then
         sudo apt update && sudo apt install gh -y
     fi
 
-    echo "🔑 Starting GitHub login..."
-    gh auth login
+    echo "🔑 Starting GitHub login in device code mode..."
+    gh auth login --device
     echo "✅ GitHub authentication complete."
 else
     echo "ℹ️ Skipping GitHub login."
