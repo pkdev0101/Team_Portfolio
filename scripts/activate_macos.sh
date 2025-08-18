@@ -19,37 +19,7 @@ add_to_bashrc 'alias code="code --no-sandbox"'
 brew update
 brew install python ruby
 
-# 2. Python Virtual Envs
-VENV_DIR="$HOME/.local/venvs"
-mkdir -p "$VENV_DIR"
-
-# Update aliases to point to new location
-add_to_bashrc "alias flaskenv=\"source $VENV_DIR/flaskenv/bin/activate\""
-add_to_bashrc "alias pagesenv=\"source $VENV_DIR/pagesenv/bin/activate\""
-add_to_bashrc "export PATH=\"$VENV_DIR/flaskenv/bin:$VENV_DIR/pagesenv/bin:\$PATH\""
-
-# Flaskenv
-if [ ! -d "$VENV_DIR/flaskenv" ]; then
-    python3 -m venv "$VENV_DIR/flaskenv"
-    source "$VENV_DIR/flaskenv/bin/activate"
-    pip install --upgrade pip
-    pip install Flask requests SQLAlchemy Werkzeug Flask-Login Flask-SQLAlchemy Flask-Migrate \
-                Flask-RESTful Flask-Cors PyJWT pandas numpy matplotlib seaborn scikit-learn \
-                pymysql psycopg2-binary python-dotenv boto3
-    deactivate
-fi
-
-# Pagesenv
-if [ ! -d "$VENV_DIR/pagesenv" ]; then
-    python3 -m venv "$VENV_DIR/pagesenv"
-    source "$VENV_DIR/pagesenv/bin/activate"
-    pip install --upgrade pip
-    pip install nbconvert nbformat pyyaml notebook requests python-dotenv pandas seaborn \
-                scikit-learn progress newspaper3k wikipedia emoji lxml_html_clean
-    deactivate
-fi
-
-# 3. Ruby Gems
+# 2. Ruby Gems
 # Add Homebrew Ruby to PATH (before system Ruby)
 RUBY_PATH=$(brew --prefix ruby)/bin
 add_to_bashrc "export PATH=\"$RUBY_PATH:\$PATH\""

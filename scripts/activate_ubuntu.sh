@@ -16,10 +16,7 @@ add_to_bashrc() {
 }
 
 # 0. Aliases and Virtualenv Prompt
-add_to_bashrc 'alias flaskenv="source /opt/venvs/flaskenv/bin/activate"'
-add_to_bashrc 'alias pagesenv="source /opt/venvs/pagesenv/bin/activate"'
 add_to_bashrc 'alias code="code --no-sandbox"'
-add_to_bashrc 'export PATH="/opt/venvs/flaskenv/bin:/opt/venvs/pagesenv/bin:$PATH"'
 add_to_bashrc 'export GEM_HOME="/opt/gems"'
 add_to_bashrc 'export PATH="/opt/gems/bin:$PATH"'
 if ! grep -q 'VIRTUAL_ENV' "$BASHRC"; then
@@ -37,34 +34,16 @@ fi
 # 1. APT Packages
 sudo apt update
 sudo apt install -y python3 python3-pip python-is-python3 python3-venv ruby-full build-essential \
-    zlib1g-dev jupyter-notebook sqlite3
+    zlib1g-dev jupyter-notebook sqlite3 lsof
 
-# 2. Python Virtual Envs
-mkdir -p /opt/venvs && sudo chmod 755 /opt/venvs
-
-# Flaskenv
-if [ ! -d /opt/venvs/flaskenv ]; then
-    python3 -m venv /opt/venvs/flaskenv
-    source /opt/venvs/flaskenv/bin/activate
-    pip install --upgrade pip
-    pip install Flask requests SQLAlchemy Werkzeug Flask-Login Flask-SQLAlchemy Flask-Migrate \
-                Flask-RESTful Flask-Cors PyJWT pandas numpy matplotlib seaborn scikit-learn \
-                pymysql psycopg2-binary python-dotenv boto3
-    deactivate
-fi
-
-# Pagesenv
-if [ ! -d /opt/venvs/pagesenv ]; then
-    python3 -m venv /opt/venvs/pagesenv
-    source /opt/venvs/pagesenv/bin/activate
-    pip install --upgrade pip
-    pip install nbconvert nbformat pyyaml notebook requests python-dotenv pandas seaborn \
-                scikit-learn progress newspaper3k wikipedia emoji lxml_html_clean
-    deactivate
-fi
-
-# 3. Ruby Gems
+# 2. Ruby Gems
 sudo mkdir -p "$GEM_HOME"
 sudo chmod -R 777 "$GEM_HOME"
 sudo gem install bundler jekyll benchmark openssl zlib racc bigdecimal drb unicode-display_width \
                  logger etc fileutils ipaddr mutex_m ostruct rss strscan stringio time
+
+# 3.  Prompt and setGitHub config
+read -p "Enter your Git username: " GIT_USER_NAME
+read -p "Enter your Git email: " GIT_USER_EMAIL
+git config --global user.name "$GIT_USER_NAME"
+git config --global user.email "$GIT_USER_EMAIL"

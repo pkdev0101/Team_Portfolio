@@ -1,16 +1,23 @@
 ---
+toc: True
+breadcrumb: True
 layout: post
-title: Tools Setup
+data: tools
+title: GitHub Pages Setup 
 description: A key to learning in this class is understanding how to make a GitHub Pages project.  This guide will setup and run the project.  At the end, you will have a student Website that can be used for blogging classroom learnings and progress.
 categories: ['DevOps']
-permalink: /tools/setup
 author: Lily Wu
-menu: nav/tools_setup.html
-toc: True
-comments: True
+permalink: /tools/old/github_pages
+breadcrumbs: True 
 ---
 
 ## Installation Hack
+
+New plan... Start with [VSCode Online](https://vscode.dev/).   The objective is to do some edits before tools install and get the actions working without the dependency of start with tools.
+
+Everything below needs to be restructured and ensure it is not duplicated in future sections.
+
+-------
 
 Welcome to your journey of creating your own blogging website! This setup process will guide you through working in a Linux terminal, managing folders, cloning a project, adding packages, and embarking on the `Software Development Lifecycle (SDLC)`. This is a fundamental skill for any developer, and while it may seem challenging at first, remember that every expert was once a beginner. Let's dive in and conquer this iconic struggle together!
 
@@ -31,7 +38,6 @@ Development journey begins with a lot of setup. After these initial steps, we ar
                              Files and Folders              repository from            the tools required              workflow 
                                 Management                  version control             (Ruby, Python)               (SDLC) phases
 ```
-
 
 ### Shell Commands
 
@@ -154,8 +160,8 @@ Obtain pages repository.
 
 ```bash
 cd
-mkdir nighthawk 
-cd nighthawk 
+mkdir open 
+cd open 
 git clone https://github.com/open-coding-society/pages.git
 ```
 
@@ -164,8 +170,9 @@ git clone https://github.com/open-coding-society/pages.git
 ```bash
 #  Most tools have been pre-installed. Run shell command to automatically finish tool setup.
 cd
-cd nighthawk/pages/scripts
-./activate_github.sh 
+cd open/pages
+pagesenv
+bundle installl
 ```
 
 ---
@@ -179,7 +186,7 @@ cd nighthawk/pages/scripts
 ```bash
 # Run shell command to automatically install all your tools.
 cd
-cd nighthawk/pages/scripts
+cd open/pages/scripts
 ./activate_ubuntu.sh
 
 ```
@@ -194,7 +201,7 @@ cd nighthawk/pages/scripts
 ```bash
 #  Run shell command to automatically install all your tools. 
 cd
-cd nighthawk/pages/scripts
+cd open/pages/scripts
 ./activate_macos.sh
 ```
 
@@ -276,8 +283,8 @@ cd
 
 3. **Setup a directory for projects:**
 ```bash
-mkdir -p nighthawk
-cd nighthawk 
+mkdir -p open
+cd open 
 git clone https://github.com/open-coding-society/student_2025.git
 ```
 
@@ -331,7 +338,7 @@ All students are building a GitHub Pages website.  These steps get your website 
 
 1. Open a terminal 
 
-2. Type `cd ~/nighthawk/portfolio/student_2025`
+2. Type `cd ~/open/portfolio/student_2025`
 
 3. Activate virtual environment `source venv/bin/activate`
 

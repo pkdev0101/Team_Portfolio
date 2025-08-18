@@ -5,7 +5,7 @@ data: tools
 title: Account Creation
 description: Learn how to create and manage course-required accounts, including a Portfolio Website, GitHub, Slack, and LinkedIn, while protecting your Personal Identifiable Information (PII).
 categories: ['DevOps']
-permalink: /tools/accounts
+permalink: /tools/old/accounts
 breadcrumb: True
 author: John Mortensen
 ---

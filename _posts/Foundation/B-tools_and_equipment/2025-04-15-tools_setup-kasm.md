@@ -16,18 +16,17 @@ breadcrumb: True
 Welcome to your journey of setting up your Operating System and Tools! This setup process will guide you through working in a Linux terminal, managing folders, cloning a project, and adding packages.
 
 ## Visual Representation of the Workflow
-```text
-+-------------------+       +-------------------+       +-------------------+       +-------------------+       +-------------------+
-|                   |       |                   |       |                   |       |                   |       |                   |
-|  Linux Terminal   | ----> |  Shell Commands   | ----> |   Clone Project   | ----> |  Package Manager  | ----> |       SDLC        |
-|                   |       |                   |       |                   |       |                   |       |                   |
-+-------------------+       +-------------------+       +-------------------+       +-------------------+       +-------------------+
-        |                           |                           |                           |                            |
-        v                           v                           v                           v                            v
-  Open Terminal              Terminal/Folder Mgmt         Clone the project          Set up and configure       Establish a development
-                             Files and Folders            repository from            the tools required              workflow 
-                                Management                version control             (Ruby, Python)               (SDLC) phases
-````
+
+```mermaid
+flowchart TD
+    A["💻 Open Terminal"] 
+    B["> Linux Commands<br>mkdir, cd, ls"]
+    C["📁 Clone Project<br>git clone https://<your-repo>"]
+    D["🛠️ Activate Tools<br>Ruby, Python, Git"]
+    E["🔄 SDLC<br>code->make->test->commit"]
+
+    A --> B --> C --> D --> E
+```
 
 ## Shell Commands
 
@@ -50,9 +49,12 @@ Welcome to your journey of setting up your Operating System and Tools! This setu
 * **List installed packages:** `apt list --installed`
 
 ---
-##  KASM Workspace Setup (Ubuntu Noble / Kali)
+
+## KASM Workspace Setup (Ubuntu Noble / Kali)
 
 Thanks to improvements in the KASM image, getting started is fast and simple.
+
+Open a Terminal
 
 ### First-time setup
 
@@ -61,16 +63,16 @@ mkdir opencs
 cd opencs
 git clone https://github.com/Open-Coding-Society/student.git
 cd student/
+./scripts/activate.sh # prompts for Git UID and Personal Email
 ./scripts/venv.sh
 code .
-make
 ```
-
-During the `./scripts/venv.sh` run, you will be prompted to enter your Git username and email to configure your Git commit identity. This only happens if Git is not already configured globally.
 
 ---
 
-###  After restarting a session
+### After restarting a session
+
+Open a Terminal
 
 Your data persists even after workspace restarts or destroys. Simply relaunch your environment and run:
 
@@ -78,43 +80,24 @@ Your data persists even after workspace restarts or destroys. Simply relaunch yo
 cd opencs/student
 source venv/bin/activate
 code .
-make
 ```
+
 ---
 
-## Version Checks
+### Version Checks (Optional)
+
+Open a Terminal
 
 ```bash
 ruby -v
 bundle -v
 python --version
 jupyter --version
+git config --global --list
+jupyter kernelspec list
+pip list
 ```
 
 ---
-
-## What is `make`?
-
-Think of `make` as a smart **task helper** for developers.
-
-* It **automates commands** you would normally type one by one.
-* It reads a special file called a **Makefile**, which lists tasks and how to run them.
-
-### Example:
-
-Instead of running:
-
-```bash
-bundle exec jekyll serve
-python3 my_script.py
-```
-
-Just run:
-
-```bash
-make
-```
-
-And it will do everything listed in the `Makefile`.
 
 {% include slim_sidebar.html %}
