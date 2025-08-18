@@ -58,9 +58,9 @@ flowchart TD
 
 [VSCode link, Select OS and follow instructions](https://code.visualstudio.com/download)
 
-### WSL commands
+### WSL common commands
 
-- `wsl --help`, `wsl -l -o`, `wsl -l -v`, `wsl --shutdown`
+- `wsl --help`, `wsl -l -o`, `wsl -l -v`, `wsl --shutdown`, `wsl --uregister`
 
 ### WSL instll
 
@@ -90,7 +90,7 @@ flowchart TD
    wsl
    ```
 
-6. Close your terminal.
+6. Close Terminal.
 
 ---
 
