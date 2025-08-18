@@ -56,7 +56,11 @@ flowchart TD
 
 ### Install VSCode
 
-[VSCode link, Select OS and follow instructions](https://code.visualstudio.com/download)
+[VSCode link, Select OS and select default on prompts](https://code.visualstudio.com/download)
+
+### Install Git Config Manager (GCM)
+
+[Git Config Manager and select default on prompts](https://git-scm.com/downloads/win)
 
 ### WSL common commands
 
@@ -105,6 +109,7 @@ Run these commands to set up your Uubuntu developer tools for the first time.
 ```bash
 mkdir opencs
 cd opencs
+git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git-credential-manager.exe"
 git clone https://github.com/Open-Coding-Society/student.git
 cd student/
 ./scripts/activate_ubuntu.sh # prompts for root password
