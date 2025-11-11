@@ -1,8 +1,14 @@
 @import "materials/main";
-@import "root-color-map"; // central color variables (do not duplicate)
 
 // note: # is used for id, . used for classes
-// Color variables are defined centrally in root-color-map.scss / user-colors.scss
+// Defined colors for each item
+$toggle-btn-bg: green;
+$toggle-btn-hover-bg: darkgreen;
+$msger-send-btn-bg: blue;
+$msger-send-btn-hover-bg: darkblue;
+$left-msg-bg: white;
+$right-msg-bg: lightBlue1;
+
 $spacing-unit: 2rem;
 
 //mixin for button

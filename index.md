@@ -1,5 +1,5 @@
 ---
-layout: base
+layout: post 
 title: I'm [Your Full Name]
 hide: true
 ---
@@ -17,7 +17,7 @@ Hi! My name is [Your Full Name]
     <a href="https://open-coding-society.github.io/student">
         <img src="https://img.shields.io/badge/GitHub%20Pages-327FC7?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Pages">
     </a>
-    <a href="https://kasm.nighthawkcodingsociety.com/">
+    <a href="https://kasm.opencodingsociety.com/">
         <img src="https://img.shields.io/badge/KASM-0078D4?style=for-the-badge&logo=kasm&logoColor=white" alt="KASM">
     </a>
     <a href="https://vscode.dev/">

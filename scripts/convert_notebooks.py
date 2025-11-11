@@ -54,6 +54,16 @@ def ensure_directory_exists(path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
 
 
+def fix_js_code_blocks(markdown):
+    # This regex finds ```python blocks starting with %%js and replaces with ```javascript
+    pattern = re.compile(r"```python\n%%js\n", re.MULTILINE)
+    markdown = pattern.sub("```javascript\n", markdown)
+    # Optionally, handle blocks with no newline after %%js
+    pattern2 = re.compile(r"```python\r?\n%%js\r?\n", re.MULTILINE)
+    markdown = pattern2.sub("```javascript\n", markdown)
+    return markdown
+
+
 # Function to convert the notebook to Markdown with front matter
 def convert_notebook_to_markdown_with_front_matter(notebook_file):
     with open(notebook_file, "r", encoding="utf-8") as file:
@@ -63,6 +73,7 @@ def convert_notebook_to_markdown_with_front_matter(notebook_file):
         process_mermaid_cells(notebook)
         exporter = MarkdownExporter()
         markdown, _ = exporter.from_notebook_node(notebook)
+        markdown = fix_js_code_blocks(markdown) # Fix JS code blocks
         front_matter_content = (
             "---\n"
             + "\n".join(f"{key}: {value}" for key, value in front_matter.items())
