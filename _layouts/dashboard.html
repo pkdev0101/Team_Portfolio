@@ -1,14 +1,14 @@
 ---
 title: Dashboard
-layout: aesthetihawk
+layout: openaesthetic
 active_tab: dashboard
 ---
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts/dist/apexcharts.css" />
 <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css" />
-<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/aesthetihawk/tabs.css" />
-<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/aesthetihawk/charts.css" />
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/openaesthetic/tabs.css" />
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/openaesthetic/charts.css" />
 <div class="w-full">
     <div class="space-y-4 sm:space-y-6">
         <div class="text-sm font-medium text-center border-b text-neutral-400 border-neutral-700 relative">
@@ -773,7 +773,7 @@ active_tab: dashboard
 
 <!-- JavaScript for tab switching -->
 <script type="module">
-    import { setupTabSwitcher } from '{{ site.baseurl }}/assets/js/aesthetihawk/dashboard/tabSwitcher.js';
+    import { setupTabSwitcher } from '{{ site.baseurl }}/assets/js/openaesthetic/dashboard/tabSwitcher.js';
 
     // call the function with your tab ids and initial tab
     document.addEventListener('DOMContentLoaded', function () {
