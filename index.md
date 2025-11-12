@@ -1,7 +1,8 @@
 ---
 layout: post 
-title: I'm [Your Full Name]
+title: Portfolio Home 
 hide: true
+show_reading_time: false
 ---
 
 Hi! My name is [Your Full Name]
