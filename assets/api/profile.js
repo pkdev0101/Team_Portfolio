@@ -132,11 +132,12 @@ export function deleteData(options)  {
          
          // Java User Logout
 export async function logoutUserJava() {
-             const logoutURL = javaURI + '/api/logout'; // Logout API endpoint
+             const logoutURL = javaURI + '/my/logout'; // Logout API endpoint
          
              const options = {
                  ...fetchOptions, // Include necessary headers from fetchOptions
                  method: 'POST',
+                 credentials: 'include', // Ensure cookies like JWT are included
              };
          
              console.log('Logout initiated.');
