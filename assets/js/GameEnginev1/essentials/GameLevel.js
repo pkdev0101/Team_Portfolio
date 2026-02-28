@@ -7,6 +7,7 @@ class GameLevel {
     this.gameEnv.game = gameControl.game
     this.gameEnv.path = gameControl.path
     this.gameEnv.gameContainer = gameControl.gameContainer
+    this.gameEnv.gameCanvas = gameControl.gameCanvas
     this.gameEnv.gameControl = gameControl
   }
 
@@ -47,11 +48,6 @@ class GameLevel {
 
     // Clear out the game objects array
     this.gameEnv.gameObjects = [];
-    
-    // Clean up GameEnv (including canvas)
-    if (this.gameEnv && typeof this.gameEnv.destroy === "function") {
-      this.gameEnv.destroy();
-    }
     
     window.removeEventListener("resize", this.resize.bind(this))
   }

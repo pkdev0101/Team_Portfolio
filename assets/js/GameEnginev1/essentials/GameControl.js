@@ -211,7 +211,7 @@ class GameControl {
 
     // Helper method to save the current canvas id and image data in the game container
     saveCanvasState() {
-        const gameContainer = this.gameContainer;
+        const gameContainer = document.getElementById('gameContainer');
         const canvasElements = gameContainer.querySelectorAll('canvas');
         this.savedCanvasState = Array.from(canvasElements).map(canvas => {
             return {
@@ -223,7 +223,7 @@ class GameControl {
 
     // Helper method to hide the current canvas state in the game container
     hideCanvasState() {
-        const gameContainer = this.gameContainer;
+        const gameContainer = document.getElementById('gameContainer');
         const canvasElements = gameContainer.querySelectorAll('canvas');
         canvasElements.forEach(canvas => {
             if (canvas.id !== 'gameCanvas') {
@@ -234,7 +234,7 @@ class GameControl {
 
     // Helper method to restore the hidden canvas item to be visible
     showCanvasState() {
-        const gameContainer = this.gameContainer;
+        const gameContainer = document.getElementById('gameContainer');
         this.savedCanvasState.forEach(hidden_canvas => {
             const canvas = document.getElementById(hidden_canvas.id);
             if (canvas) {

@@ -1,7 +1,7 @@
 ---
 layout: opencs
-title: RPG Water Example 
-permalink: /gamify/water
+title: Fortune Finders
+permalink: /gamify/fortuneFinders
 ---
 
 <div id="gameContainer">
@@ -11,12 +11,12 @@ permalink: /gamify/water
 
 <script type="module">
     // Adnventure Game assets locations
-    import Core from "/assets/js/GameEnginev1/essentials/Game.js";
-    import GameControl from "/assets/js/GameEnginev1/essentials/GameControl.js";
-    import GameLevelWater from "/assets/js/GameEnginev1/GameLevelWater.js";
+    import FinTech from "/assets/js/GameEnginev1/FinTech.js";
+    import GameLevelAirport from "/assets/js/GameEnginev1/GameLevelAirport.js";
+    import GameLevelWallstreet from "/assets/js/GameEnginev1/GameLevelWallstreet.js";
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
-    const gameLevelClasses = [GameLevelWater];
+    const gameLevelClasses = [GameLevelAirport, GameLevelWallstreet];
 
     // Web Server Environment data
     const environment = {
@@ -29,6 +29,6 @@ permalink: /gamify/water
         gameLevelClasses: gameLevelClasses
 
     }
-    // Launch Adventure Game using the central core and adventure GameControl
-    Core.main(environment, GameControl);
+    // Launch Adventure Game
+    FinTech.main(environment);
 </script>
