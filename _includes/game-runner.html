@@ -83,7 +83,6 @@
   let gameInstance = null;
   let currentLevelIndex = 0;
   let escapeKeyHandler = null;
-  let originalContainerId = null;
 
   // Disable game controls initially
   stopBtn.disabled = true;
@@ -156,19 +155,12 @@
       gameInstance = null;
     }
     
-    // Get the game container
-    const gameContainer = document.getElementById('gameContainer') || document.getElementById('game-container-{{ include.runner_id }}');
+    // Get the game container and clear all remaining canvases
+    const gameContainer = document.getElementById('game-container-{{ include.runner_id }}');
     
-    // Clear all remaining canvases in container
     if (gameContainer) {
       const canvases = gameContainer.querySelectorAll('canvas');
       canvases.forEach(c => c.remove());
-      
-      // Restore original container ID
-      if (originalContainerId !== null) {
-        gameContainer.id = originalContainerId;
-        originalContainerId = null;
-      }
     }
     
     updateStatus('Stopped');
@@ -237,14 +229,8 @@
       };
       document.addEventListener('keydown', escapeKeyHandler);
 
-      // Get container (GameEnv will create canvas dynamically)
+      // Get container (GameEnv will use this reference directly)
       const gameContainer = document.getElementById('game-container-{{ include.runner_id }}');
-      
-      // Temporarily rename container to 'gameContainer' for GameEnv compatibility
-      if (gameContainer) {
-        originalContainerId = gameContainer.id;
-        gameContainer.id = 'gameContainer';
-      }
       
       // Setup game environment
       const path = '{{ site.baseurl }}';
@@ -326,13 +312,6 @@
       runBtn.disabled = false;
       stopBtn.disabled = true;
       levelSelect.disabled = false;
-      
-      // Restore container ID on error
-      const gameContainer = document.getElementById('gameContainer') || document.getElementById('game-container-{{ include.runner_id }}');
-      if (gameContainer && originalContainerId !== null) {
-        gameContainer.id = originalContainerId;
-        originalContainerId = null;
-      }
       
       // Remove escape key listener on error
       if (escapeKeyHandler) {

@@ -59,10 +59,11 @@ class GameEnv {
     /**
      * Sets the canvas element and its 2D rendering context.
      * Creates a new canvas dynamically with a unique ID to avoid conflicts.
+     * Uses the container reference passed from environment, or searches for 'gameContainer' as fallback.
      */
     setCanvas() {
-        // Prefer builder container if present
-        this.container = document.getElementById('gameContainer') || document.body;
+        // Use the container reference if provided (from environment), otherwise search by ID
+        this.container = this.gameContainer || document.getElementById('gameContainer') || document.body;
         
         // Create canvas dynamically with unique ID
         this.canvasId = `gameCanvas-${GameEnv.canvasCounter++}`;
@@ -77,7 +78,8 @@ class GameEnv {
      */
     setTop() {
         // In builder/embedded mode, align game space to container top (no header offset)
-        if (document.getElementById('gameContainer')) {
+        // Check if container was set (after setCanvas) or if gameContainer was provided
+        if (this.container || this.gameContainer) {
             this.top = 0;
             return;
         }
