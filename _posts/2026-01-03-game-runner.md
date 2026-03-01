@@ -67,7 +67,7 @@ export const gameLevelClasses = [GameLevelBasic];
 
 ---
 
-## Basic Game: Copied from GameBuilder
+## Basic Game: Background, Custom Player
 
 {% capture challenge1 %}
 Run the basic game. Use WASD or arrow keys to move Chill Guy around the desert. Walk up to R2D2 to trigger an interaction!
@@ -100,13 +100,13 @@ class CustomLevel {
       pixels: { height: 512, width: 384 },
       orientation: { rows: 4, columns: 3 },
       down: { row: 0, start: 0, columns: 3 },
-      downRight: { row: Math.min(1, 4 - 1), start: 0, columns: 3, rotate: Math.PI/16 },
-      downLeft: { row: Math.min(2, 4 - 1), start: 0, columns: 3, rotate: -Math.PI/16 },
-      right: { row: Math.min(1, 4 - 1), start: 0, columns: 3 },
-      left: { row: Math.min(2, 4 - 1), start: 0, columns: 3 },
-      up: { row: Math.min(3, 4 - 1), start: 0, columns: 3 },
-      upRight: { row: Math.min(1, 4 - 1), start: 0, columns: 3, rotate: -Math.PI/16 },
-      upLeft: { row: Math.min(2, 4 - 1), start: 0, columns: 3, rotate: Math.PI/16 },
+      downRight: { row: 1, start: 0, columns: 3, rotate: Math.PI/16 },
+      downLeft: { row: 2, start: 0, columns: 3, rotate: -Math.PI/16 },
+      right: { row: 1, start: 0, columns: 3 },
+      left: { row: 2, start: 0, columns: 3 },
+      up: { row: 3, start: 0, columns: 3 },
+      upRight: { row: 1, start: 0, columns: 3, rotate: -Math.PI/16 },
+      upLeft: { row: 2, start: 0, columns: 3, rotate: Math.PI/16 },
       hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 },
       keypress: { up: 87, left: 65, down: 83, right: 68 }
     };
@@ -127,6 +127,26 @@ export { GameControl };
    challenge=challenge1
    code=code1
    height="150px"
+%}
+
+## Combine Game Levels: Connected levels via ESC key
+
+{% capture challenge2 %}
+Run the basic game. Use WASD or arrow keys to move Chill Guy around the desert. Walk up to R2D2 to trigger an interaction!
+{% endcapture %}
+
+{% capture code2 %}
+import GameControl from "/assets/js/GameEnginev1/essentials/GameControl.js";
+import GameLevelWater from "/assets/js/GameEnginev1/GameLevelWater.js";
+import GameLevelParallaxFish from "/assets/js/GameEnginev1/GameLevelParallaxFish.js";
+export const gameLevelClasses = [GameLevelWater, GameLevelParallaxFish];
+export { GameControl };
+{% endcapture %}
+
+{% include game-runner.html
+   runner_id="game2"
+   challenge=challenge2
+   code=code2
 %}
 
 ## Best Practices

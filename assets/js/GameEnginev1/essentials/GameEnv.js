@@ -18,12 +18,16 @@
  * @property {number} innerHeight - The inner height of the game area.
  * @property {number} top - The top offset of the game area.
  * @property {number} bottom - The bottom offset of the game area.
+ * @property {string} canvasId - The unique ID of the canvas element for this instance.
  */
 class GameEnv {
+    static canvasCounter = 0; // Static counter for unique canvas IDs
+    
     constructor() {
         this.container = null;
         this.canvas = null;
         this.ctx = null;
+        this.canvasId = null;
         this.innerWidth = 0;
         this.innerHeight = 0;
         this.top = 0;
@@ -54,11 +58,17 @@ class GameEnv {
 
     /**
      * Sets the canvas element and its 2D rendering context.
+     * Creates a new canvas dynamically with a unique ID to avoid conflicts.
      */
     setCanvas() {
         // Prefer builder container if present
         this.container = document.getElementById('gameContainer') || document.body;
-        this.canvas = document.getElementById('gameCanvas');
+        
+        // Create canvas dynamically with unique ID
+        this.canvasId = `gameCanvas-${GameEnv.canvasCounter++}`;
+        this.canvas = document.createElement('canvas');
+        this.canvas.id = this.canvasId;
+        this.container.appendChild(this.canvas);
         this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
     }
 
@@ -104,6 +114,22 @@ class GameEnv {
  
     clear() {
         this.ctx.clearRect(0, 0, this.innerWidth, this.innerHeight);
+    }
+
+    /**
+     * Destroy the game environment and clean up the canvas.
+     * Removes the canvas element from the DOM.
+     */
+    destroy() {
+        // Remove canvas from DOM
+        if (this.canvas && this.canvas.parentNode) {
+            this.canvas.parentNode.removeChild(this.canvas);
+        }
+        
+        // Clear references
+        this.canvas = null;
+        this.ctx = null;
+        this.canvasId = null;
     }
 }
 
