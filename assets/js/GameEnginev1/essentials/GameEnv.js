@@ -51,8 +51,21 @@ class GameEnv {
         this.setCanvas();
         this.setTop();
         this.setBottom();
-        this.innerWidth = window.innerWidth;
-        this.innerHeight = window.innerHeight - this.top - this.bottom;
+        
+        // Check if dimensions are overridden in environment (for game-runner/builder)
+        // Otherwise use window dimensions
+        if (this.game?.environment?.innerWidth !== undefined) {
+            this.innerWidth = this.game.environment.innerWidth;
+        } else {
+            this.innerWidth = window.innerWidth;
+        }
+        
+        if (this.game?.environment?.innerHeight !== undefined) {
+            this.innerHeight = this.game.environment.innerHeight;
+        } else {
+            this.innerHeight = window.innerHeight - this.top - this.bottom;
+        }
+        
         this.size();
     }
 
