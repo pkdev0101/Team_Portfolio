@@ -1,15 +1,6 @@
 /**
  * GameLevelCustom.js
- *
- * Purpose:
- * - Defines a custom level for GameEnginev1.
- * - Demonstrates how to add a Background, Player, NPCs, and Barriers.
- * - Includes BUILDER_ONLY hooks so a level-builder/editor can:
- *    1) Read what objects exist in the level
- *    2) Toggle barrier visibility (hitbox debug)
- *    3) Inject "drawn" barriers live
  */
-
 import GameEnvBackground from '/assets/js/GameEnginev1/essentials/GameEnvBackground.js';
 import Player           from '/assets/js/GameEnginev1/essentials/Player.js';
 import Npc              from '/assets/js/GameEnginev1/essentials/Npc.js';
@@ -32,8 +23,7 @@ class GameLevelCustom {
       zIndex: 0
     };
 
-   
-    const playerConfig = {
+   const playerConfig = {
       id: "player",
       src: `${path}/images/players/player.png`, 
       x: Math.floor(width * 0.10),
@@ -102,19 +92,6 @@ class GameLevelCustom {
       isFinish: true
     };
 
-    // -------------------------------------------------------------------------
-    // 3) ADD CLASSES TO THE LEVEL
-    //
-    // Many engines use `this.classes` to know which "types" it should build.
-    // Some engines also require pushing actual object instances or configs into
-    // `gameEnv.gameObjects`. Since your template only shows `this.classes`,
-    // we include BOTH patterns:
-    //   A) classes list (engine builds them)
-    //   B) manual object creation (if needed)
-    //
-    // If your engine ONLY wants classes, keep `this.classes` and remove the
-    // manual pushes below (or vice versa).
-    // -------------------------------------------------------------------------
     this.classes = [
       GameEnvBackground, // Step 1: background
       Player,            // Step 2: player
@@ -122,12 +99,6 @@ class GameLevelCustom {
       Barrier            // Step 4: barriers/walls
     ];
 
-    // -------------------------------------------------------------------------
-    // 4) OPTIONAL: MANUALLY CREATE OBJECTS (depends on your engine)
-    //
-    // If your engine expects you to push objects into gameEnv.gameObjects,
-    // do it here. If not, delete this block.
-    // -------------------------------------------------------------------------
     try {
       gameEnv.gameObjects = Array.isArray(gameEnv.gameObjects) ? gameEnv.gameObjects : [];
 
@@ -150,20 +121,6 @@ class GameLevelCustom {
       console.warn("Manual object creation skipped/failed:", err?.message || err);
     }
 
-    // -------------------------------------------------------------------------
-    // 5) BUILDER_ONLY: Debug/editor integration
-    //
-    // This section helps a parent "builder" window control the level.
-    // It can:
-    // - request object summaries
-    // - toggle wall visibility
-    // - inject barriers drawn in the editor
-    // -------------------------------------------------------------------------
-
-    /* BUILDER_ONLY_START */
-
-    // 5A) Post object summary to builder (helps debug visibility of NPCs/walls)
-    // This runs after a short delay so objects have time to load/create.
     try {
       setTimeout(() => {
         try {
