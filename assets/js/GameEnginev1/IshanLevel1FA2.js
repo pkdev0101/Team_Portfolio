@@ -40,6 +40,9 @@ class GameLevelIshanlevel1 {
      * @param {Object} gameEnv - Active engine environment for this level.
      */
     constructor(gameEnv) {
+        this.gameEnv = gameEnv;
+        this.midAnimationInterval = null;
+
         const path = gameEnv.path;
         const width = gameEnv.innerWidth;
         const height = gameEnv.innerHeight;
@@ -130,6 +133,43 @@ class GameLevelIshanlevel1 {
              */
             interact: function() { if (this.dialogueSystem) { this.showRandomDialogue(); } }
         };
+
+        /**
+         * Decorative animated NPC placed roughly between start and goal.
+         *
+         * Animation intent:
+         * - This NPC is ambient flavor (not gameplay-critical).
+         * - It does not block player movement (`hitbox` is zeroed).
+         * - Runtime animation randomization is handled in `initialize()`.
+         */
+        const midAnimNpcData = {
+            id: 'mid_animation_npc',
+            greeting: false,
+            src: path + "/images/gamify/tux.png",
+            // Slightly smaller than key NPCs so it reads as background activity.
+            SCALE_FACTOR: 7,
+            // Base animation speed; later randomized every tick for variation.
+            ANIMATION_RATE: 24,
+            INIT_POSITION: {
+                // Spawn in a central band of the map so the animation appears "in between" checkpoints.
+                x: Math.floor(width * (0.36 + Math.random() * 0.20)),
+                y: Math.floor(height * (0.34 + Math.random() * 0.18))
+            },
+            pixels: { height: 256, width: 352 },
+            orientation: { rows: 8, columns: 11 },
+            down: { row: 0, start: 0, columns: 3 },
+            right: { row: Math.min(1, 8 - 1), start: 0, columns: 3 },
+            left: { row: Math.min(2, 8 - 1), start: 0, columns: 3 },
+            up: { row: Math.min(3, 8 - 1), start: 0, columns: 3 },
+            upRight: { row: Math.min(3, 8 - 1), start: 0, columns: 3 },
+            downRight: { row: Math.min(1, 8 - 1), start: 0, columns: 3 },
+            upLeft: { row: Math.min(2, 8 - 1), start: 0, columns: 3 },
+            downLeft: { row: 0, start: 0, columns: 3 },
+            hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
+            dialogues: ['...'],
+            reaction: function() {},
+            interact: function() {}
+        };
         const dbarrier_1 = {
             id: 'dbarrier_1', x: 15, y: 215, width: 294, height: 53, visible: false,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
@@ -174,6 +214,7 @@ class GameLevelIshanlevel1 {
             { class: GameEnvBackground, data: bgData },
             { class: Player, data: playerData },
             { class: Npc, data: npcData1 },
+            { class: Npc, data: midAnimNpcData },
             { class: Npc, data: npcData2 },
             { class: Barrier, data: dbarrier_1 },
             { class: Barrier, data: dbarrier_2 },
@@ -183,6 +224,51 @@ class GameLevelIshanlevel1 {
         ];
 
         
+    }
+
+    /**
+     * Random animation controller for the decorative midpoint NPC.
+     * Called by `GameLevel` after all objects are created.
+     *
+     * Execution details:
+     * - Runs every 900ms via `setInterval`.
+     * - Finds the decorative NPC by id (`mid_animation_npc`).
+     * - Randomizes `direction` so the sprite appears to look around.
+     * - Randomizes `animationRate` to create subtle speed changes.
+     *
+     * Note: `Character.updateAnimationFrame()` advances frames when
+     * `frameCounter % animationRate === 0`, so smaller values animate faster.
+     */
+    initialize() {
+        // Allowed facing directions from the sprite sheet configuration.
+        const directions = ['up', 'right', 'down', 'left', 'upRight', 'downRight', 'upLeft', 'downLeft'];
+        // Helper to keep random selection logic readable.
+        const pickRandomDirection = () => directions[Math.floor(Math.random() * directions.length)];
+
+        // Store interval handle so `destroy()` can clear it during level transition.
+        this.midAnimationInterval = setInterval(() => {
+            // Look up the already-instantiated decorative NPC in live game objects.
+            const midNpc = this.gameEnv?.gameObjects?.find(
+                (obj) => obj?.spriteData?.id === 'mid_animation_npc'
+            );
+            // Guard in case object is not ready yet or already destroyed.
+            if (!midNpc) return;
+
+            // Randomly change facing direction + animation speed to create ambient motion.
+            midNpc.direction = pickRandomDirection();
+            // Random speed window: lower = faster animation, higher = slower animation.
+            midNpc.animationRate = 10 + Math.floor(Math.random() * 28);
+        }, 900);
+    }
+
+    /**
+     * Cleanup for level-specific timers.
+     */
+    destroy() {
+        if (this.midAnimationInterval) {
+            clearInterval(this.midAnimationInterval);
+            this.midAnimationInterval = null;
+        }
     }
 }
 
