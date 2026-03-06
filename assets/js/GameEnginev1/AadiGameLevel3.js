@@ -69,15 +69,16 @@ class GameLevelAadilevel3 {
     };
 
     /**
-     * NPC object (Pranay) that the player can interact with.
-     * Purpose: Adds a character to the level for interaction/dialogue (supports FA2 interaction work later).
-     *
-     * Key property selections:
-     * - INIT_POSITION: Places the NPC near the middle-right so the player can reach them easily.
-     * - dialogues: Defines the lines available for random dialogue interactions.
-     * - reaction/interact: Hooks into the dialogue system if enabled; otherwise logs a greeting.
-     * - hitbox: Non-zero hitbox so proximity/collision-based interactions can register.
-     */
+ * Interaction Logic (FA2)
+ * When the player interacts with the NPC, the interact() function is triggered.
+ * This occurs during the game loop when the engine detects a player interaction.
+ *
+ * Reaction:
+ * The NPC will display dialogue using showRandomDialogue() or log a greeting message.
+ *
+ * Object Updates:
+ * The NPC dialogue system updates the visible dialogue state when interaction occurs.
+ */
     const npcData1 = {
       id: 'Pranay',
       greeting: 'Hello',
