@@ -94,6 +94,52 @@ class GameLevelIshanlevel1fa3 {
             interact: function() { if (this.dialogueSystem) { this.showRandomDialogue(); } }
         };
 
+        const npcSlime = {
+            id: 'slime_guard',
+            greeting: 'Hissss... you shall not pass so easily!',
+            src: path + "/images/gamebuilder/sprites/slime.png",
+            SCALE_FACTOR: 10,
+            ANIMATION_RATE: 80,
+            INIT_POSITION: { x: 430, y: 180 },
+            pixels: { height: 225, width: 225 },
+            orientation: { rows: 4, columns: 4 },
+            down: { row: 0, start: 0, columns: 4 },
+            right: { row: 1, start: 0, columns: 4 },
+            left: { row: 2, start: 0, columns: 4 },
+            up: { row: 3, start: 0, columns: 4 },
+            upRight: { row: 3, start: 0, columns: 4 },
+            downRight: { row: 1, start: 0, columns: 4 },
+            upLeft: { row: 2, start: 0, columns: 4 },
+            downLeft: { row: 0, start: 0, columns: 4 },
+            hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
+            dialogues: ['Hissss... you shall not pass so easily!', 'Slimes rule this planet!', 'Turn back now, astronaut!'],
+            reaction: function() { if (this.dialogueSystem) { this.showReactionDialogue(); } else { console.log(this.greeting); } },
+            interact: function() { if (this.dialogueSystem) { this.showRandomDialogue(); } }
+        };
+
+        const npcUfo = {
+            id: 'ufo_boss',
+            greeting: 'I am the alien warlord. Solve my riddle to proceed!',
+            src: path + "/images/gamebuilder/sprites/ufos.png",
+            SCALE_FACTOR: 6,
+            ANIMATION_RATE: 60,
+            INIT_POSITION: { x: 520, y: 380 },
+            pixels: { height: 500, width: 500 },
+            orientation: { rows: 4, columns: 3 },
+            down: { row: 0, start: 0, columns: 3 },
+            right: { row: Math.min(1, 4 - 1), start: 0, columns: 3 },
+            left: { row: Math.min(2, 4 - 1), start: 0, columns: 3 },
+            up: { row: Math.min(3, 4 - 1), start: 0, columns: 3 },
+            upRight: { row: Math.min(3, 4 - 1), start: 0, columns: 3 },
+            downRight: { row: Math.min(1, 4 - 1), start: 0, columns: 3 },
+            upLeft: { row: Math.min(2, 4 - 1), start: 0, columns: 3 },
+            downLeft: { row: 0, start: 0, columns: 3 },
+            hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
+            dialogues: ['I am the alien warlord. Solve my riddle to proceed!', 'This planet belongs to us UFOs!', 'Only the bravest astronauts reach the end.'],
+            reaction: function() { if (this.dialogueSystem) { this.showReactionDialogue(); } else { console.log(this.greeting); } },
+            interact: function() { if (this.dialogueSystem) { this.showRandomDialogue(); } }
+        };
+
         const dbarrier_1 = {
             id: 'dbarrier_1', x: 11, y: 196, width: 287, height: 45, visible: false,
             hitbox: { widthPercentage: 0.0, heightPercentage: 0.0 },
@@ -138,7 +184,9 @@ this.classes = [      { class: GameEnvBackground, data: bgData },
       { class: Barrier, data: dbarrier_4 },
       { class: Barrier, data: dbarrier_5 },
       { class: Npc, data: npcData2 },
-      { class: Barrier, data: dbarrier_6 }
+      { class: Barrier, data: dbarrier_6 },
+      { class: Npc, data: npcSlime },
+      { class: Npc, data: npcUfo }
 ];
 
         
