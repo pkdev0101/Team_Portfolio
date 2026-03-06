@@ -13,10 +13,10 @@ permalink: /gamify/MazeRunner
     // Adnventure Game assets locations
     import Core from "{{site.baseurl}}/assets/js/GameEnginev1/essentials/Game.js";
     import GameControl from "{{site.baseurl}}/assets/js/GameEnginev1/essentials/GameControl.js";
-    import IshanLevel1FA1 from "{{site.baseurl}}/assets/js/GameEnginev1/IshanLevel1FA1.js";
+    import IshanLevel1FA3 from "{{site.baseurl}}/assets/js/GameEnginev1/IshanLevel1FA3.js";
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
-    const gameLevelClasses = [IshanLevel1FA1];
+    const gameLevelClasses = [IshanLevel1FA3];
 
     // Web Server Environment data
     const environment = {
