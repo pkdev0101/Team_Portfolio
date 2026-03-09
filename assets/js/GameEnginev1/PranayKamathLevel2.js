@@ -12,6 +12,7 @@ class GameLevelCustom {
     const width = gameEnv.innerWidth;
     const height = gameEnv.innerHeight;
 
+    // Background
     const backgroundConfig = {
       id: "bg-main",
       src: `${path}/images/backgrounds/level1.png`,
@@ -62,6 +63,35 @@ class GameLevelCustom {
       patrolMinX: Math.floor(width * 0.55),
       patrolMaxX: Math.floor(width * 0.82),
       patrolSpeed: 2
+    };
+
+    // Extra friendly NPC
+    const npc2Config = {
+      id: "npc-helper",
+      src: `${path}/images/npcs/friendly.png`,
+      x: Math.floor(width * 0.25),
+      y: Math.floor(height * 0.72),
+      scale: 1.0,
+      zIndex: 5,
+      dialog: [
+        "Watch out for the enemy ahead!",
+        "Stay focused and keep moving!",
+        "You're almost there!"
+      ]
+    };
+
+    // Boss NPC using boss.png
+    const bossNpcConfig = {
+      id: "npc-boss",
+      src: `${path}/images/gamify/water/boss.png`,
+      x: Math.floor(width * 0.82),
+      y: Math.floor(height * 0.72),
+      scale: 1.2,
+      zIndex: 6,
+      behavior: "patrol",
+      patrolMinX: Math.floor(width * 0.72),
+      patrolMaxX: Math.floor(width * 0.93),
+      patrolSpeed: 1.5
     };
 
     // Floor barrier
@@ -139,6 +169,8 @@ class GameLevelCustom {
     gameEnv.gameObjects.push(new Player(playerConfig, gameEnv));
     gameEnv.gameObjects.push(new Npc(friendlyNpcConfig, gameEnv));
     gameEnv.gameObjects.push(new Npc(enemyNpcConfig, gameEnv));
+    gameEnv.gameObjects.push(new Npc(npc2Config, gameEnv));
+    gameEnv.gameObjects.push(new Npc(bossNpcConfig, gameEnv));
 
     gameEnv.gameObjects.push(new Barrier(floorBarrierConfig, gameEnv));
     gameEnv.gameObjects.push(new Barrier(leftWallConfig, gameEnv));
