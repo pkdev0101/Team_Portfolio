@@ -12,7 +12,6 @@ class GameLevelCustom {
     const width = gameEnv.innerWidth;
     const height = gameEnv.innerHeight;
 
-    // Background
     const backgroundConfig = {
       id: "bg-main",
       src: `${path}/images/backgrounds/level1.png`,
