@@ -112,6 +112,58 @@ class GameLevelAadilevel3 {
       }
     };
 
+
+/**
+ * FA3 Asset Update
+ * A new NPC image asset (IshanJha.png) was added to the game.
+ * The file is stored in assets/images/gamify/.
+ * The NPC configuration was updated to reference this asset
+ * using the src path so the engine loads the image correctly.
+ */
+
+const npcData1 = {
+  id: 'Ishan',
+  greeting: 'Whats up!',
+  src: path + "/images/gamify/IshanJha.png",
+  SCALE_FACTOR: 2,
+  ANIMATION_RATE: 50,
+  INIT_POSITION: { x: 500, y: 300 },
+
+  pixels: { height: 1024, width: 1024 },
+
+  orientation: { rows: 1, columns: 1 },
+
+  down: { row: 0, start: 0, columns: 1 },
+  right: { row: 0, start: 0, columns: 1 },
+  left: { row: 0, start: 0, columns: 1 },
+  up: { row: 0, start: 0, columns: 1 },
+  upRight: { row: 0, start: 0, columns: 1 },
+  downRight: { row: 0, start: 0, columns: 1 },
+  upLeft: { row: 0, start: 0, columns: 1 },
+  downLeft: { row: 0, start: 0, columns: 1 },
+
+  hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
+
+  dialogues: ['Hello'],
+
+  reaction: function () {
+    if (this.dialogueSystem) {
+      this.showReactionDialogue();
+    } else {
+      console.log(this.greeting);
+    }
+  },
+
+  interact: function () {
+    this.reaction();
+    if (this.dialogueSystem) {
+      this.showRandomDialogue();
+    }
+  }
+};
+
+
+
     /**
      * Barrier object #1.
      * Purpose: Blocks player movement through a specific rectangular region to shape the playable space.
