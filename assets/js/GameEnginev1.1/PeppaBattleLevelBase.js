@@ -27,7 +27,7 @@ class PeppaBattleLevelBase {
         const image_data_background = {
             name: `peppa-${config.levelId}-arena`,
             greeting: config.levelIntro,
-            src: `${path}/images/gamify/bg/reef.png`
+            src: `${path}/images/gamify/PeppaPigBackground.jpg`
         };
 
         const sprite_data_ishan = {
