@@ -9,10 +9,10 @@ class PeppaLevel1 extends PeppaBattleLevelBase {
 			enemyName: 'George Pig',
 			enemyGreeting: 'Dinosaur roar! George Pig is ready to fight!',
 			enemyImage: 'georgiepig.png',
-			enemyHealth: 3,
-			enemySpeed: 0.7,
+			enemyHealth: 5,
+			enemySpeed: 1.0,
 			enemyScale: 4,
-			playerHealth: 5
+			playerHealth: 4
 		});
 	}
 }

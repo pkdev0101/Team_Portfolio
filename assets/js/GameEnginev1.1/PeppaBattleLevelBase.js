@@ -14,12 +14,12 @@ class PeppaBattleLevelBase {
         this.playerMaxHealth = config.playerHealth ?? 5;
         this.playerHealth = this.playerMaxHealth;
         this.playerDamageCooldownMs = config.playerDamageCooldownMs ?? 650;
-        this.attackCooldownMs = config.attackCooldownMs ?? 280;
+        this.attackCooldownMs = config.attackCooldownMs ?? 450;
         this.laserSpeed = config.laserSpeed ?? 14;
         this.lastPlayerHitAt = 0;
         this.lastAttackAt = 0;
         this.lastEnemyLaserAt = 0;
-        this.enemyLaserIntervalMs = config.enemyLaserIntervalMs ?? 1800;
+        this.enemyLaserIntervalMs = config.enemyLaserIntervalMs ?? 1100;
         this.attackRequested = false;
         this.battleEnded = false;
         this.messageTimeout = null;
@@ -72,7 +72,7 @@ class PeppaBattleLevelBase {
     initialize() {
         this.createHud();
         // Show enemy greeting prominently at level start
-        this.updateHud(`${this.config.enemyName}: "${this.config.enemyGreeting}" — Fight! Use WASD to move and SPACE to fire lasers.`);
+        this.updateHud(`${this.config.enemyName}: "${this.config.enemyGreeting}" — Fight! Use WASD to move and SPACE to fire lasers (shoot in facing direction).`);
         document.addEventListener('keydown', this.boundKeyDown);
         this.createLaserLayer();
     }
@@ -103,6 +103,17 @@ class PeppaBattleLevelBase {
         this.laserLayer.style.height = `${this.gameEnv.innerHeight}px`;
     }
 
+    /** Direction to velocity (vx, vy) for straight lasers */
+    directionToVelocity(dir) {
+        const s = this.laserSpeed;
+        const map = {
+            right: [s, 0], left: [-s, 0], up: [0, -s], down: [0, s],
+            upRight: [s * 0.707, -s * 0.707], upLeft: [-s * 0.707, -s * 0.707],
+            downRight: [s * 0.707, s * 0.707], downLeft: [-s * 0.707, s * 0.707]
+        };
+        return map[dir] || [s, 0];
+    }
+
     spawnLaser(fromX, fromY, targetX, targetY, isPlayerLaser) {
         const dx = targetX - fromX;
         const dy = targetY - fromY;
@@ -112,6 +123,19 @@ class PeppaBattleLevelBase {
             y: fromY,
             vx: (dx / len) * this.laserSpeed,
             vy: (dy / len) * this.laserSpeed,
+            isPlayerLaser,
+            life: 60,
+            maxLife: 60
+        });
+    }
+
+    /** Spawn laser in a straight direction (no homing) */
+    spawnLaserStraight(fromX, fromY, direction, isPlayerLaser) {
+        const [vx, vy] = this.directionToVelocity(direction);
+        this.lasers.push({
+            x: fromX,
+            y: fromY,
+            vx, vy,
             isPlayerLaser,
             life: 60,
             maxLife: 60
@@ -185,6 +209,32 @@ class PeppaBattleLevelBase {
                 }
             }
         }
+    }
+
+    showWinScreen() {
+        const overlay = document.createElement('div');
+        overlay.id = 'peppa-win-overlay';
+        overlay.style.cssText = `
+            position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; background: rgba(0,0,0,0.85);
+            color: #fff; font-family: Arial, sans-serif; text-align: center; animation: peppa-win-fade 0.5s ease;
+        `;
+        overlay.innerHTML = `
+            <style>@keyframes peppa-win-fade { from { opacity: 0; } to { opacity: 1; } }</style>
+            <div style="font-size: 48px; font-weight: bold; margin-bottom: 16px; text-shadow: 0 0 20px gold;">VICTORY!</div>
+            <div style="font-size: 22px; margin-bottom: 8px;">You defeated all challengers!</div>
+            <div style="font-size: 16px; opacity: 0.9;">The Peppa Pig Ring Champion</div>
+            <div style="margin-top: 32px; font-size: 14px; opacity: 0.7;">Press any key or click to continue</div>
+        `;
+        const finish = () => {
+            overlay.remove();
+            if (this.gameEnv?.gameControl?.currentLevel) {
+                this.gameEnv.gameControl.currentLevel.continue = false;
+            }
+        };
+        overlay.addEventListener('click', finish);
+        document.addEventListener('keydown', finish, { once: true });
+        document.body.appendChild(overlay);
     }
 
     enforceFloorBarriers() {
@@ -314,13 +364,12 @@ class PeppaBattleLevelBase {
                 this.lastAttackAt = now;
                 const px = player.position.x + player.width / 2;
                 const py = player.position.y + player.height / 2;
-                const bx = boss.position.x + boss.width / 2;
-                const by = boss.position.y + boss.height / 2;
-                this.spawnLaser(px, py, bx, by, true);
+                const dir = player.direction || 'right';
+                this.spawnLaserStraight(px, py, dir, true);
             }
         }
 
-        // Enemy periodically fires lasers at player
+        // Enemy periodically fires straight lasers at player (aimed at player position when fired)
         if (!boss.isDefeated && now - this.lastEnemyLaserAt >= this.enemyLaserIntervalMs) {
             this.lastEnemyLaserAt = now;
             const bx = boss.position.x + boss.width / 2;
@@ -348,12 +397,16 @@ class PeppaBattleLevelBase {
 
         if (boss.isDefeated && !this.battleEnded) {
             this.battleEnded = true;
-            this.updateHud(`${this.config.enemyName} defeated! Moving to next level...`);
-            this.messageTimeout = setTimeout(() => {
-                if (this.gameEnv?.gameControl?.currentLevel) {
-                    this.gameEnv.gameControl.currentLevel.continue = false;
-                }
-            }, 1100);
+            const ctrl = this.gameEnv?.gameControl;
+            const isFinalLevel = ctrl && ctrl.currentLevelIndex === ctrl.levelClasses?.length - 1;
+            if (isFinalLevel) {
+                this.showWinScreen();
+            } else {
+                this.updateHud(`${this.config.enemyName} defeated! Moving to next level...`);
+                this.messageTimeout = setTimeout(() => {
+                    if (ctrl?.currentLevel) ctrl.currentLevel.continue = false;
+                }, 1100);
+            }
             return;
         }
 
