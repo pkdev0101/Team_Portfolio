@@ -23,6 +23,7 @@ class PeppaBattleLevelBase {
         this.attackRequested = false;
         this.battleEnded = false;
         this.messageTimeout = null;
+        this.restartTimeout = null;
         this.lasers = [];
 
         // Floor barrier: characters stay in lower portion (ground), cannot float in air
@@ -82,12 +83,50 @@ class PeppaBattleLevelBase {
         if (this.messageTimeout) {
             clearTimeout(this.messageTimeout);
         }
+        if (this.restartTimeout) {
+            clearTimeout(this.restartTimeout);
+        }
         if (this.hud) {
             this.hud.remove();
         }
         if (this.laserLayer && this.laserLayer.parentNode) {
             this.laserLayer.remove();
         }
+        const loseOverlay = document.getElementById(`peppa-lose-overlay-${this.config.levelId}`);
+        if (loseOverlay) {
+            loseOverlay.remove();
+        }
+    }
+
+    showLoseScreenAndRestart() {
+        const existing = document.getElementById(`peppa-lose-overlay-${this.config.levelId}`);
+        if (existing) {
+            existing.remove();
+        }
+
+        const overlay = document.createElement('div');
+        overlay.id = `peppa-lose-overlay-${this.config.levelId}`;
+        overlay.style.cssText = `
+            position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; background: rgba(0,0,0,0.88);
+            color: #fff; font-family: Arial, sans-serif; text-align: center; animation: peppa-lose-fade 0.35s ease;
+        `;
+        overlay.innerHTML = `
+            <style>@keyframes peppa-lose-fade { from { opacity: 0; } to { opacity: 1; } }</style>
+            <div style="font-size: 44px; font-weight: bold; margin-bottom: 12px; color: #ff5b5b; text-shadow: 0 0 14px rgba(255,91,91,0.85);">YOU LOST</div>
+            <div style="font-size: 22px; margin-bottom: 8px;">Try again.</div>
+            <div style="font-size: 14px; opacity: 0.8;">Restarting level...</div>
+        `;
+        document.body.appendChild(overlay);
+
+        const ctrl = this.gameEnv?.gameControl;
+        this.restartTimeout = setTimeout(() => {
+            overlay.remove();
+            // Restart current level index from scratch
+            if (ctrl && ctrl.currentLevel && ctrl.currentLevel.gameLevel === this) {
+                ctrl.transitionToLevel();
+            }
+        }, 1500);
     }
 
     createLaserLayer() {
@@ -388,11 +427,11 @@ class PeppaBattleLevelBase {
             this.updateHud(`${this.config.enemyName} hit you!`);
         }
 
-        if (this.playerHealth <= 0) {
-            this.playerHealth = this.playerMaxHealth;
-            player.position.x = this.playerSpawn.x;
-            player.position.y = this.playerSpawn.y;
-            this.updateHud('You were knocked out. Back to your corner!');
+        if (this.playerHealth <= 0 && !this.battleEnded) {
+            this.battleEnded = true;
+            this.updateHud('You lost. Restarting level...');
+            this.showLoseScreenAndRestart();
+            return;
         }
 
         if (boss.isDefeated && !this.battleEnded) {
