@@ -1,7 +1,7 @@
 ---
 layout: opencs
 title: Peppa Pig
-permalink: /gamify/peppaPigv1-1
+permalink: /gamify/gpeppaPigv1-1
 ---
 
 <div id="gameContainer">
