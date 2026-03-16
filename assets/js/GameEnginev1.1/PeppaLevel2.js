@@ -9,7 +9,7 @@ class PeppaLevel2 extends PeppaBattleLevelBase {
 			enemyName: 'Peppa Pig',
 			enemyGreeting: 'Snort! Peppa Pig is not going easy on you.',
 			enemyImage: 'peppapig.png',
-			enemyHealth: 8,
+			enemyHealth: 5,
 			enemySpeed: 1.2,
 			enemyScale: 4,
 			playerHealth: 4
