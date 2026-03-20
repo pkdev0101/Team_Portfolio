@@ -76,7 +76,7 @@ class GameCore {
 
     async _initializeGameControlAsync(gameLevelClasses) {
         try {
-            const mod = await import('./GameControl.js');
+            const mod = await import(`${this.path}/assets/js/GameEnginev1.1/essentials/GameControl.js`);
             const DefaultGameControl = mod.default || mod;
             this.gameControl = new DefaultGameControl(this, gameLevelClasses);
             this.gameControl.start();
@@ -157,7 +157,7 @@ class GameCore {
         
         try {
             // v1.1 stores the pause code in PauseMenu.js (not "PauseFeature").
-            import('./PauseMenu.js').then(mod => {
+            import(`${this.path}/assets/js/GameEnginev1.1/essentials/PauseMenu.js`).then(mod => {
                 const PauseMenu = mod.default;
                 // PauseMenu expects the gameControl instance directly
                 const pauseMenuInstance = new PauseMenu(this.gameControl, {});
@@ -479,7 +479,7 @@ class GameCore {
             console.log('Leaderboard container not found, creating new...');
             
             const ctrlForLeaderboard = this.getActiveControl();
-            import('../Leaderboard.js')
+            import(`${this.path}/assets/js/GameEnginev1.1/Leaderboard.js`)
                 .then(mod => {
                     // Determine parent - use gameContainer if available
                     let parentId = 'gameContainer';
