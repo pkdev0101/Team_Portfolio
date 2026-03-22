@@ -468,7 +468,7 @@ class GameCore {
             console.log('Leaderboard container not found, creating new...');
             
             const ctrlForLeaderboard = this.getActiveControl();
-            import(`${this.path}/assets/js/GameEnginev1.1/Leaderboard.js`)
+            import(`${this.path}/assets/js/GameEnginev1.1/essentials/Leaderboard.js`)
                 .then(mod => {
                     // Determine parent - use gameContainer if available
                     let parentId = 'gameContainer';
