@@ -26,6 +26,12 @@ class PeppaBattleLevelBase {
         this.restartTimeout = null;
         this.lasers = [];
 
+        // API / leaderboard settings
+        this.apiBase = config.apiBase || 'http://localhost:4559/api';
+        this.playerName = config.playerName || 'Ishan';
+        this.levelScore = 0;
+        this.leaderboard = [];
+
         // Floor barrier: characters stay in lower portion (ground), cannot float in air
         this.floorY = height * 0.48;
         this.ceilingY = 0;
@@ -35,7 +41,7 @@ class PeppaBattleLevelBase {
             name: `peppa-${config.levelId}-arena`,
             greeting: config.levelIntro,
             src: `${path}/images/gamify/PeppaPigBackground.jpg`,
-            pixels: {height: 1229, width: 1920}
+            pixels: { height: 1229, width: 1920 }
         };
 
         const sprite_data_ishan = {
@@ -73,10 +79,16 @@ class PeppaBattleLevelBase {
 
     initialize() {
         this.createHud();
-        // Show enemy greeting prominently at level start
-        this.updateHud(`${this.config.enemyName}: "${this.config.enemyGreeting}" — Fight! Use WASD to move and SPACE to fire lasers (shoot in facing direction).`);
+        this.updateHud(
+            `${this.config.enemyName}: "${this.config.enemyGreeting}" — Fight! Use WASD to move and SPACE to fire lasers (shoot in facing direction).`
+        );
         document.addEventListener('keydown', this.boundKeyDown);
         this.createLaserLayer();
+
+        // Load leaderboard when level starts
+        this.loadLeaderboard().then(() => {
+            this.renderLeaderboard();
+        });
     }
 
     destroy() {
@@ -97,6 +109,79 @@ class PeppaBattleLevelBase {
         if (loseOverlay) {
             loseOverlay.remove();
         }
+        const winOverlay = document.getElementById('peppa-win-overlay');
+        if (winOverlay) {
+            winOverlay.remove();
+        }
+    }
+
+    async saveScore(score) {
+        try {
+            const response = await fetch(`${this.apiBase}/leaderboard`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: this.playerName,
+                    score: score,
+                    levelId: this.config.levelId,
+                    levelTitle: this.config.levelTitle
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`POST failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Score saved:', data);
+            return data;
+        } catch (error) {
+            console.error('Error saving score:', error);
+            this.updateHud('Won battle, but score could not be saved.');
+            return null;
+        }
+    }
+
+    async loadLeaderboard() {
+        try {
+            const response = await fetch(`${this.apiBase}/leaderboard`);
+
+            if (!response.ok) {
+                throw new Error(`GET failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            this.leaderboard = Array.isArray(data) ? data : [];
+            return this.leaderboard;
+        } catch (error) {
+            console.error('Error loading leaderboard:', error);
+            this.leaderboard = [];
+            return [];
+        }
+    }
+
+    renderLeaderboard() {
+        const leaderboardEl = document.getElementById(`peppa-leaderboard-${this.config.levelId}`);
+        if (!leaderboardEl) return;
+
+        if (!this.leaderboard || this.leaderboard.length === 0) {
+            leaderboardEl.innerHTML = '<div style="opacity:0.8;">Leaderboard: no scores yet.</div>';
+            return;
+        }
+
+        leaderboardEl.innerHTML = `
+            <div style="font-weight:700; margin-bottom:4px;">Leaderboard</div>
+            ${this.leaderboard
+                .slice(0, 5)
+                .map((entry, index) => {
+                    const name = entry.name ?? 'Player';
+                    const score = entry.score ?? 0;
+                    return `<div>${index + 1}. ${name} - ${score}</div>`;
+                })
+                .join('')}
+        `;
     }
 
     showLoseScreenAndRestart() {
@@ -123,7 +208,6 @@ class PeppaBattleLevelBase {
         const ctrl = this.gameEnv?.gameControl;
         this.restartTimeout = setTimeout(() => {
             overlay.remove();
-            // Restart current level index from scratch
             if (ctrl && ctrl.currentLevel && ctrl.currentLevel.gameLevel === this) {
                 ctrl.transitionToLevel();
             }
@@ -143,13 +227,17 @@ class PeppaBattleLevelBase {
         this.laserLayer.style.height = `${this.gameEnv.innerHeight}px`;
     }
 
-    /** Direction to velocity (vx, vy) for straight lasers */
     directionToVelocity(dir) {
         const s = this.laserSpeed;
         const map = {
-            right: [s, 0], left: [-s, 0], up: [0, -s], down: [0, s],
-            upRight: [s * 0.707, -s * 0.707], upLeft: [-s * 0.707, -s * 0.707],
-            downRight: [s * 0.707, s * 0.707], downLeft: [-s * 0.707, s * 0.707]
+            right: [s, 0],
+            left: [-s, 0],
+            up: [0, -s],
+            down: [0, s],
+            upRight: [s * 0.707, -s * 0.707],
+            upLeft: [-s * 0.707, -s * 0.707],
+            downRight: [s * 0.707, s * 0.707],
+            downLeft: [-s * 0.707, s * 0.707]
         };
         return map[dir] || [s, 0];
     }
@@ -169,13 +257,13 @@ class PeppaBattleLevelBase {
         });
     }
 
-    /** Spawn laser in a straight direction (no homing) */
     spawnLaserStraight(fromX, fromY, direction, isPlayerLaser) {
         const [vx, vy] = this.directionToVelocity(direction);
         this.lasers.push({
             x: fromX,
             y: fromY,
-            vx, vy,
+            vx,
+            vy,
             isPlayerLaser,
             life: 60,
             maxLife: 60
@@ -205,7 +293,6 @@ class PeppaBattleLevelBase {
                 continue;
             }
 
-            // Draw laser
             const alpha = L.life / L.maxLife;
             ctx.save();
             ctx.translate(L.x, L.y);
@@ -224,22 +311,29 @@ class PeppaBattleLevelBase {
             ctx.fillRect(-25, -2, 50, 4);
             ctx.restore();
 
-            // Collision
             const hitW = 20;
             const hitH = 20;
             const hitLeft = L.x - hitW / 2;
             const hitTop = L.y - hitH / 2;
 
             if (L.isPlayerLaser && boss && !boss.isDefeated) {
-                if (hitLeft < boss.position.x + boss.width && hitLeft + hitW > boss.position.x &&
-                    hitTop < boss.position.y + boss.height && hitTop + hitH > boss.position.y) {
+                if (
+                    hitLeft < boss.position.x + boss.width &&
+                    hitLeft + hitW > boss.position.x &&
+                    hitTop < boss.position.y + boss.height &&
+                    hitTop + hitH > boss.position.y
+                ) {
                     boss.takeDamage(1);
                     this.updateHud(`Laser hit! ${this.config.enemyName} took damage.`);
                     this.lasers.splice(i, 1);
                 }
             } else if (!L.isPlayerLaser && player) {
-                if (hitLeft < player.position.x + player.width && hitLeft + hitW > player.position.x &&
-                    hitTop < player.position.y + player.height && hitTop + hitH > player.position.y) {
+                if (
+                    hitLeft < player.position.x + player.width &&
+                    hitLeft + hitW > player.position.x &&
+                    hitTop < player.position.y + player.height &&
+                    hitTop + hitH > player.position.y
+                ) {
                     if (Date.now() - this.lastPlayerHitAt >= this.playerDamageCooldownMs) {
                         this.lastPlayerHitAt = Date.now();
                         this.playerHealth = Math.max(0, this.playerHealth - 1);
@@ -252,6 +346,11 @@ class PeppaBattleLevelBase {
     }
 
     showWinScreen() {
+        const existing = document.getElementById('peppa-win-overlay');
+        if (existing) {
+            existing.remove();
+        }
+
         const overlay = document.createElement('div');
         overlay.id = 'peppa-win-overlay';
         overlay.style.cssText = `
@@ -263,6 +362,7 @@ class PeppaBattleLevelBase {
             <style>@keyframes peppa-win-fade { from { opacity: 0; } to { opacity: 1; } }</style>
             <div style="font-size: 48px; font-weight: bold; margin-bottom: 16px; text-shadow: 0 0 20px gold;">VICTORY!</div>
             <div style="font-size: 22px; margin-bottom: 8px;">You defeated all challengers!</div>
+            <div style="font-size: 18px; margin-bottom: 8px;">Final Score: ${this.levelScore}</div>
             <div style="font-size: 16px; opacity: 0.9;">The Peppa Pig Ring Champion</div>
             <div style="margin-top: 32px; font-size: 14px; opacity: 0.7;">Press any key or click to continue</div>
         `;
@@ -335,6 +435,7 @@ class PeppaBattleLevelBase {
             <div id="peppa-player-hp-${this.config.levelId}"></div>
             <div id="peppa-enemy-hp-${this.config.levelId}"></div>
             <div id="peppa-message-${this.config.levelId}" style="margin-top:6px; font-size:13px;"></div>
+            <div id="peppa-leaderboard-${this.config.levelId}" style="margin-top:8px; font-size:12px;"></div>
         `;
 
         const container = this.gameEnv.gameContainer || this.gameEnv.container || document.getElementById('gameContainer') || document.body;
@@ -409,7 +510,6 @@ class PeppaBattleLevelBase {
             }
         }
 
-        // Enemy periodically fires straight lasers at player (aimed at player position when fired)
         if (!boss.isDefeated && now - this.lastEnemyLaserAt >= this.enemyLaserIntervalMs) {
             this.lastEnemyLaserAt = now;
             const bx = boss.position.x + boss.width / 2;
@@ -437,12 +537,21 @@ class PeppaBattleLevelBase {
 
         if (boss.isDefeated && !this.battleEnded) {
             this.battleEnded = true;
+
+            const score = this.playerHealth * 100;
+            this.levelScore = score;
+
+            this.saveScore(score)
+                .then(() => this.loadLeaderboard())
+                .then(() => this.renderLeaderboard());
+
             const ctrl = this.gameEnv?.gameControl;
             const isFinalLevel = ctrl && ctrl.currentLevelIndex === ctrl.levelClasses?.length - 1;
+
             if (isFinalLevel) {
                 this.showWinScreen();
             } else {
-                this.updateHud(`${this.config.enemyName} defeated! Moving to next level...`);
+                this.updateHud(`${this.config.enemyName} defeated! Score: ${score}. Moving to next level...`);
                 this.messageTimeout = setTimeout(() => {
                     if (ctrl?.currentLevel) ctrl.currentLevel.continue = false;
                 }, 1100);

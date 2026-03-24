@@ -13,7 +13,7 @@ class PeppaLevel3 extends PeppaBattleLevelBase {
 			enemySpeed: 1.4,
 			enemyScale: 4,
 			playerHealth: 4
-		});
+			});
 	}
 }
 
