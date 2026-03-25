@@ -27,7 +27,7 @@ class PeppaBattleLevelBase {
         this.lasers = [];
 
         // API / leaderboard settings
-        this.apiBase = config.apiBase || 'http://localhost:4559/api';
+        this.apiBase = config.apiBase || null;
         this.playerName = config.playerName || 'Ishan';
         this.levelScore = 0;
         this.leaderboard = [];
@@ -116,51 +116,62 @@ class PeppaBattleLevelBase {
     }
 
     async saveScore(score) {
-        try {
-            const response = await fetch(`${this.apiBase}/leaderboard`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: this.playerName,
-                    score: score,
-                    levelId: this.config.levelId,
-                    levelTitle: this.config.levelTitle
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`POST failed: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log('Score saved:', data);
-            return data;
-        } catch (error) {
-            console.error('Error saving score:', error);
-            this.updateHud('Won battle, but score could not be saved.');
-            return null;
-        }
+    if (!this.apiBase) {
+        console.log('No API base configured. Skipping score save.');
+        return null;
     }
 
-    async loadLeaderboard() {
-        try {
-            const response = await fetch(`${this.apiBase}/leaderboard`);
+    try {
+        const response = await fetch(`${this.apiBase}/leaderboard`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: this.playerName,
+                score: score,
+                levelId: this.config.levelId,
+                levelTitle: this.config.levelTitle
+            })
+        });
 
-            if (!response.ok) {
-                throw new Error(`GET failed: ${response.status}`);
-            }
-
-            const data = await response.json();
-            this.leaderboard = Array.isArray(data) ? data : [];
-            return this.leaderboard;
-        } catch (error) {
-            console.error('Error loading leaderboard:', error);
-            this.leaderboard = [];
-            return [];
+        if (!response.ok) {
+            throw new Error(`POST failed: ${response.status}`);
         }
+
+        const data = await response.json();
+        console.log('Score saved:', data);
+        return data;
+    } catch (error) {
+        console.error('Error saving score:', error);
+        this.updateHud('Won battle, but score could not be saved.');
+        return null;
     }
+}
+
+async loadLeaderboard() {
+    if (!this.apiBase) {
+        console.log('No API base configured. Using empty leaderboard.');
+        this.leaderboard = [];
+        return [];
+    }
+
+    try {
+        const response = await fetch(`${this.apiBase}/leaderboard`);
+
+        if (!response.ok) {
+            throw new Error(`GET failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        this.leaderboard = Array.isArray(data) ? data : [];
+        return this.leaderboard;
+    } catch (error) {
+        console.error('Error loading leaderboard:', error);
+        this.leaderboard = [];
+        return [];
+    }
+}
 
     renderLeaderboard() {
         const leaderboardEl = document.getElementById(`peppa-leaderboard-${this.config.levelId}`);
