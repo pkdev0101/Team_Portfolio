@@ -19,7 +19,7 @@ description: "Class of 2029"
 owner_name: Pranay Kamath
 github_username: pkdev0101 
 github_repo: "Team_Portfolio" 
-baseurl: ""
+baseurl: "/Team_Portfolio" 
 future: true
 
 # Build settings
