@@ -38,11 +38,14 @@ class PeppaBattleLevelBase {
         this.playerSpawn = { x: width * 0.12, y: height * 0.72 };
 
         const image_data_background = {
-            name: `peppa-${config.levelId}-arena`,
-            greeting: config.levelIntro,
-            src: `${path}/images/gamify/PeppaPigBackground.jpg`,
-            pixels: { height: 1229, width: 1920 }
-        };
+    name: `peppa-${config.levelId}-arena`,
+    greeting: config.levelIntro,
+    src: `${path}/images/gamify/PeppaPigBackground.jpg`,
+    pixels: { 
+        height: height, 
+        width: width 
+    }
+};
 
         const sprite_data_ishan = {
             id: 'IshanJha',
