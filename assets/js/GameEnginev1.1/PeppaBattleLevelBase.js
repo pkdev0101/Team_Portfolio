@@ -36,6 +36,9 @@ class PeppaBattleLevelBase {
         this.floorY = height * 0.48;
         this.ceilingY = 0;
         this.playerSpawn = { x: width * 0.12, y: height * 0.72 };
+        this.enemySpawn = { x: width * 0.72, y: height * 0.66 };
+        this.initialPositionsSet = false;
+        this.messageClearTimeout = null;
 
         const image_data_background = {
              name: `peppa-${config.levelId}-arena`,
@@ -62,7 +65,7 @@ class PeppaBattleLevelBase {
             src: `${path}/images/gamify/${config.enemyImage}`,
             SCALE_FACTOR: config.enemyScale ?? 4,
             ANIMATION_RATE: 18,
-            INIT_POSITION: { x: width * 0.72, y: height * 0.66 },
+            INIT_POSITION: this.enemySpawn,
             health: config.enemyHealth,
             moveSpeed: config.enemySpeed,
             hitbox: { widthPercentage: 0.45, heightPercentage: 0.6 }
@@ -93,6 +96,9 @@ class PeppaBattleLevelBase {
 
     destroy() {
         document.removeEventListener('keydown', this.boundKeyDown);
+        if (this.messageClearTimeout) {
+            clearTimeout(this.messageClearTimeout);
+        }
         if (this.messageTimeout) {
             clearTimeout(this.messageTimeout);
         }
@@ -468,7 +474,48 @@ async loadLeaderboard() {
         }
         if (messageEl && message !== null) {
             messageEl.textContent = message;
+
+            // Auto-clear transient combat messages after a short delay
+            if (this.messageClearTimeout) {
+                clearTimeout(this.messageClearTimeout);
+            }
+
+            const persistent =
+                message.includes('Moving to next level') ||
+                message.includes('Restarting level') ||
+                message.includes('VICTORY') ||
+                message.includes('You lost');
+
+            if (!persistent) {
+                this.messageClearTimeout = setTimeout(() => {
+                    const liveMessageEl = document.getElementById(`peppa-message-${this.config.levelId}`);
+                    if (liveMessageEl) {
+                        liveMessageEl.textContent = '';
+                    }
+                }, 1500);
+            }
         }
+    }
+
+    enforceInitialSpawnPositions(player, boss) {
+        if (this.initialPositionsSet) return;
+        if (!player || !boss) return;
+
+        const floorY = this.floorY;
+        const width = this.gameEnv.innerWidth;
+        const height = this.gameEnv.innerHeight;
+
+        player.position.x = this.playerSpawn.x;
+        player.position.y = Math.min(height - player.height, Math.max(floorY, this.playerSpawn.y));
+        player.velocity.x = 0;
+        player.velocity.y = 0;
+
+        boss.position.x = this.enemySpawn.x;
+        boss.position.y = Math.min(height - boss.height, Math.max(floorY, this.enemySpawn.y));
+        boss.velocity.x = 0;
+        boss.velocity.y = 0;
+
+        this.initialPositionsSet = true;
     }
 
     getPlayer() {
@@ -507,6 +554,9 @@ async loadLeaderboard() {
         if (!player || !boss) {
             return;
         }
+
+        // Force consistent opening positions so players do not spawn off in corners
+        this.enforceInitialSpawnPositions(player, boss);
 
         const now = Date.now();
 
