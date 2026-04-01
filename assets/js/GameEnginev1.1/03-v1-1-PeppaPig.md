@@ -48,12 +48,12 @@ permalink: /gamify/gpeppaPigv1-1
 
 <script type="module">
     // Adventure Game assets locations
-    import Game from "{{site.baseurl}}/assets/js/GameEnginev1.1/essentials/Game.js";
-    import PeppaLevel1 from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaLevel1.js";
-    import PeppaLevel2 from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaLevel2.js";
-    import PeppaPowerUpMenu from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaPowerUpMenu.js";
-    import PeppaLevel3 from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaLevel3.js";
-    import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+    import Game from "{{site.baseurl}}/assets/js/GameEnginev1.1/essentials/Game.js?v=20260331";
+    import PeppaLevel1 from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaLevel1.js?v=20260331";
+    import PeppaLevel2 from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaLevel2.js?v=20260331";
+    import PeppaPowerUpMenu from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaPowerUpMenu.js?v=20260331";
+    import PeppaLevel3 from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaLevel3.js?v=20260331";
+    import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js?v=20260331';
 
     const gameLevelClasses = [PeppaLevel1, PeppaLevel2, PeppaPowerUpMenu, PeppaLevel3];
 
