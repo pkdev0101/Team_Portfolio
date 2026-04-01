@@ -25,6 +25,7 @@ class PeppaBattleLevelBase {
         this.messageTimeout = null;
         this.restartTimeout = null;
         this.lasers = [];
+        this.playerDamage = config.playerDamage ?? 1;
 
         // API / leaderboard settings
         this.apiBase = config.apiBase || null;
@@ -56,7 +57,10 @@ class PeppaBattleLevelBase {
             ANIMATION_RATE: 12,
             INIT_POSITION: this.playerSpawn,
             keypress: { up: 87, left: 65, down: 83, right: 68 },
-            hitbox: { widthPercentage: 0.4, heightPercentage: 0.6 }
+            hitbox: { widthPercentage: 0.4, heightPercentage: 0.6 },
+            playerDamage: config.playerDamage ?? 1,
+            playerSpeedMultiplier: config.playerSpeedMultiplier ?? 1,
+            playerHealth: config.playerHealth ?? 4
         };
 
         const sprite_data_enemy = {
@@ -81,9 +85,14 @@ class PeppaBattleLevelBase {
     }
 
     initialize() {
+        // Completely disable speech synthesis
+        if (window.speechSynthesis) {
+            window.speechSynthesis.speak = () => {}; // Override speak to do nothing
+            window.speechSynthesis.cancel();
+        }
         this.createHud();
         this.updateHud(
-            `${this.config.enemyName}: "${this.config.enemyGreeting}" — Fight! Use WASD to move and SPACE to fire lasers (shoot in facing direction).`
+            `Fight! Use WASD to move and SPACE to fire lasers (shoot in facing direction).`
         );
         document.addEventListener('keydown', this.boundKeyDown);
         this.createLaserLayer();
@@ -299,6 +308,12 @@ async loadLeaderboard() {
         const player = this.getPlayer();
         const boss = this.getBoss();
 
+        // Use playerDamage from player object if available
+        let playerLaserDamage = this.playerDamage;
+        if (player && typeof player.playerDamage === 'number') {
+            playerLaserDamage = player.playerDamage;
+        }
+
         for (let i = this.lasers.length - 1; i >= 0; i--) {
             const L = this.lasers[i];
             L.x += L.vx;
@@ -340,8 +355,7 @@ async loadLeaderboard() {
                     hitTop < boss.position.y + boss.height &&
                     hitTop + hitH > boss.position.y
                 ) {
-                    boss.takeDamage(1);
-                    this.updateHud(`Laser hit! ${this.config.enemyName} took damage.`);
+                    boss.takeDamage(playerLaserDamage);
                     this.lasers.splice(i, 1);
                 }
             } else if (!L.isPlayerLaser && player) {
@@ -354,7 +368,6 @@ async loadLeaderboard() {
                     if (Date.now() - this.lastPlayerHitAt >= this.playerDamageCooldownMs) {
                         this.lastPlayerHitAt = Date.now();
                         this.playerHealth = Math.max(0, this.playerHealth - 1);
-                        this.updateHud(`${this.config.enemyName}'s laser hit you!`);
                     }
                     this.lasers.splice(i, 1);
                 }
@@ -586,7 +599,6 @@ async loadLeaderboard() {
         if (!boss.isDefeated && this.areColliding(player, boss) && (now - this.lastPlayerHitAt >= this.playerDamageCooldownMs)) {
             this.lastPlayerHitAt = now;
             this.playerHealth = Math.max(0, this.playerHealth - 1);
-            this.updateHud(`${this.config.enemyName} hit you!`);
         }
 
         if (this.playerHealth <= 0 && !this.battleEnded) {

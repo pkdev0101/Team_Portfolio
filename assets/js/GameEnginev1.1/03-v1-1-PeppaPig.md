@@ -51,10 +51,11 @@ permalink: /gamify/gpeppaPigv1-1
     import Game from "{{site.baseurl}}/assets/js/GameEnginev1.1/essentials/Game.js";
     import PeppaLevel1 from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaLevel1.js";
     import PeppaLevel2 from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaLevel2.js";
+    import PeppaPowerUpMenu from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaPowerUpMenu.js";
     import PeppaLevel3 from "{{site.baseurl}}/assets/js/GameEnginev1.1/PeppaLevel3.js";
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
-    const gameLevelClasses = [PeppaLevel1, PeppaLevel2, PeppaLevel3];
+    const gameLevelClasses = [PeppaLevel1, PeppaLevel2, PeppaPowerUpMenu, PeppaLevel3];
 
     function fitPeppaToViewportBelowHeader() {
         const header = document.querySelector('header');

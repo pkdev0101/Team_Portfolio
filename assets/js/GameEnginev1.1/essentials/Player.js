@@ -31,8 +31,15 @@ class Player extends Character {
         this.acceleration = 0.001;
         this.time = 0;
         this.moved = false;
+        // Power-up support
+        this.playerDamage = data?.playerDamage ?? 1;
+        this.playerSpeedMultiplier = data?.playerSpeedMultiplier ?? 1;
+        this.playerHealth = data?.playerHealth ?? 4;
         // Initialize touch controls for mobile devices
         this.touchControls = new TouchControls(gameEnv, this.touchOptions);
+        // Set speed multiplier for movement
+        this.xVelocity *= this.playerSpeedMultiplier;
+        this.yVelocity *= this.playerSpeedMultiplier;
     }
 
     /**

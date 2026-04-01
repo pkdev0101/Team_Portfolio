@@ -26,6 +26,8 @@ class GameControl {
         this.globalInteractionHandlers = new Set();
         // Save interaction handlers for game-in-game restore functionality
         this.savedInteractionHandlers = new Set();
+        // Power-up storage
+        this.chosenPower = null;
     }
 
     
@@ -197,6 +199,14 @@ class GameControl {
         if (event.key === 'Escape') {
             this.currentLevel.continue = false;
         }
+    }
+
+    addExitKeyListener() {
+        document.addEventListener('keydown', this.exitKeyListener);
+    }
+
+    removeExitKeyListener() {
+        document.removeEventListener('keydown', this.exitKeyListener);
     }
     
     // Helper method to add exit key listener
