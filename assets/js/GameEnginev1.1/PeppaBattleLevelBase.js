@@ -32,9 +32,15 @@ class PeppaBattleLevelBase {
         this.playerName = config.playerName || '';
         this.levelScore = 0;
         this.leaderboard = [];
-        this.storageKey = `peppaLeaderboard_${config.levelId || 'default'}`;
 
-        // Floor barrier
+        // Coins
+        this.coins = [];
+        this.coinCount = 0;
+        this.coinValue = config.coinValue ?? 25;
+        this.coinRadius = config.coinRadius ?? 14;
+        this.coinTotal = config.coinTotal ?? 8;
+
+        // Floor barrier: characters stay in lower portion (ground), cannot float in air
         this.floorY = height * 0.48;
         this.ceilingY = 0;
         this.playerSpawn = { x: width * 0.12, y: height * 0.72 };
@@ -91,12 +97,10 @@ class PeppaBattleLevelBase {
             window.speechSynthesis.cancel();
         }
 
-        console.log('[PeppaBattle] apiBase:', this.apiBase);
-        console.log('[PeppaBattle] levelId:', this.config.levelId);
-
         this.ensurePlayerName();
+        this.generateCoins();
         this.createHud();
-        this.updateHud('Fight! Use WASD to move and SPACE to fire lasers.');
+        this.updateHud('Fight! Use WASD to move, SPACE to fire lasers, and collect coins.');
         document.addEventListener('keydown', this.boundKeyDown);
         this.createLaserLayer();
 
@@ -123,42 +127,41 @@ class PeppaBattleLevelBase {
         localStorage.setItem('peppaPlayerName', this.playerName);
     }
 
-    getLocalLeaderboard() {
-        try {
-            const raw = localStorage.getItem(this.storageKey);
-            const parsed = raw ? JSON.parse(raw) : [];
-            return Array.isArray(parsed) ? parsed : [];
-        } catch (error) {
-            console.error('[PeppaBattle] Error reading local leaderboard:', error);
-            return [];
+    generateCoins() {
+        this.coins = [];
+
+        const width = this.gameEnv.innerWidth;
+        const height = this.gameEnv.innerHeight;
+        const minX = width * 0.10;
+        const maxX = width * 0.90;
+        const minY = this.floorY + 30;
+        const maxY = height - 40;
+
+        const isTooCloseToSpawn = (x, y) => {
+            const distPlayer = Math.hypot(x - this.playerSpawn.x, y - this.playerSpawn.y);
+            const distEnemy = Math.hypot(x - this.enemySpawn.x, y - this.enemySpawn.y);
+            return distPlayer < 90 || distEnemy < 90;
+        };
+
+        for (let i = 0; i < this.coinTotal; i++) {
+            let tries = 0;
+            let x = minX;
+            let y = minY;
+
+            do {
+                x = minX + Math.random() * (maxX - minX);
+                y = minY + Math.random() * (maxY - minY);
+                tries += 1;
+            } while (isTooCloseToSpawn(x, y) && tries < 30);
+
+            this.coins.push({
+                x,
+                y,
+                radius: this.coinRadius,
+                collected: false,
+                spin: Math.random() * Math.PI * 2
+            });
         }
-    }
-
-    setLocalLeaderboard(entries) {
-        try {
-            localStorage.setItem(this.storageKey, JSON.stringify(entries));
-        } catch (error) {
-            console.error('[PeppaBattle] Error saving local leaderboard:', error);
-        }
-    }
-
-    addLocalScore(score) {
-        const entries = this.getLocalLeaderboard();
-
-        entries.push({
-            name: this.playerName || 'Player',
-            score: Number(score) || 0,
-            levelId: this.config.levelId,
-            levelTitle: this.config.levelTitle
-        });
-
-        entries.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
-        const trimmed = entries.slice(0, 8);
-        this.setLocalLeaderboard(trimmed);
-        this.leaderboard = trimmed;
-
-        console.log('[PeppaBattle] Local leaderboard updated:', trimmed);
-        return trimmed;
     }
 
     destroy() {
@@ -177,25 +180,14 @@ class PeppaBattleLevelBase {
     }
 
     async saveScore(score) {
-        console.log('[PeppaBattle] saveScore called with:', score);
-
-        // Always save locally first so the leaderboard works even without backend
-        this.addLocalScore(score);
-
         if (!this.apiBase) {
-            console.log('[PeppaBattle] No API base configured. Saved locally only.');
-            return {
-                success: true,
-                source: 'local',
-                leaderboard: this.leaderboard
-            };
+            // Use localStorage for leaderboard if no API
+            this.saveScoreLocal(score);
+            return { success: true };
         }
 
         try {
-            const url = `${this.apiBase}/leaderboard`;
-            console.log('[PeppaBattle] POST ->', url);
-
-            const response = await fetch(url, {
+            const response = await fetch(`${this.apiBase}/leaderboard`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -208,61 +200,52 @@ class PeppaBattleLevelBase {
                 })
             });
 
-            console.log('[PeppaBattle] POST status:', response.status);
-
             if (!response.ok) {
                 throw new Error(`POST failed: ${response.status}`);
             }
 
             const data = await response.json();
-            console.log('[PeppaBattle] Score saved to API:', data);
+            console.log('Score saved:', data);
             return data;
         } catch (error) {
-            console.error('[PeppaBattle] Error saving score to API, using local fallback:', error);
-            this.updateHud('Score saved locally.');
-            return {
-                success: true,
-                source: 'local-fallback',
-                leaderboard: this.leaderboard
-            };
+            console.error('Error saving score:', error);
+            this.updateHud('Could not save score.');
+            return null;
         }
     }
 
     async loadLeaderboard() {
-        const localEntries = this.getLocalLeaderboard();
-
         if (!this.apiBase) {
-            console.log('[PeppaBattle] No API base configured. Using local leaderboard only.');
-            this.leaderboard = localEntries;
-            return localEntries;
+            // Use localStorage for leaderboard if no API
+            this.leaderboard = this.loadLeaderboardLocal();
+            return this.leaderboard;
         }
 
         try {
-            const url = `${this.apiBase}/leaderboard`;
-            console.log('[PeppaBattle] GET ->', url);
-
-            const response = await fetch(url);
-            console.log('[PeppaBattle] GET status:', response.status);
+            const response = await fetch(`${this.apiBase}/leaderboard`);
 
             if (!response.ok) {
                 throw new Error(`GET failed: ${response.status}`);
             }
 
             const data = await response.json();
-            console.log('[PeppaBattle] GET response:', data);
-
-            if (Array.isArray(data) && data.length > 0) {
-                this.leaderboard = data;
-                return data;
-            }
-
-            console.log('[PeppaBattle] API returned empty list. Using local leaderboard.');
-            this.leaderboard = localEntries;
-            return localEntries;
+            this.leaderboard = Array.isArray(data) ? data : [];
+            return this.leaderboard;
         } catch (error) {
-            console.error('[PeppaBattle] Error loading leaderboard from API. Using local fallback:', error);
-            this.leaderboard = localEntries;
-            return localEntries;
+            console.error('Error loading leaderboard:', error);
+            this.leaderboard = [];
+            return [];
+        }
+    }
+
+    loadLeaderboardLocal() {
+        try {
+            const leaderboardKey = `peppa-leaderboard-${this.config.levelId}`;
+            const data = JSON.parse(localStorage.getItem(leaderboardKey) || '[]');
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error('Error loading leaderboard locally:', error);
+            return [];
         }
     }
 
@@ -382,6 +365,62 @@ class PeppaBattleLevelBase {
         });
     }
 
+    drawCoin(ctx, coin) {
+        const pulse = 0.85 + 0.15 * Math.sin(coin.spin);
+        const radiusX = coin.radius * pulse;
+        const radiusY = coin.radius;
+
+        ctx.save();
+        ctx.translate(coin.x, coin.y);
+
+        ctx.beginPath();
+        ctx.ellipse(0, 0, radiusX, radiusY, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#f7c948';
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#d89b00';
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.ellipse(0, 0, radiusX * 0.65, radiusY * 0.65, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = '#fff2a8';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#fff7cc';
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('$', 0, 0);
+
+        ctx.restore();
+    }
+
+    updateCoins(ctx, player) {
+        if (!ctx) return;
+
+        for (const coin of this.coins) {
+            if (coin.collected) continue;
+
+            coin.spin += 0.12;
+            this.drawCoin(ctx, coin);
+
+            if (!player) continue;
+
+            const playerCenterX = player.position.x + player.width / 2;
+            const playerCenterY = player.position.y + player.height / 2;
+            const distance = Math.hypot(playerCenterX - coin.x, playerCenterY - coin.y);
+
+            const collectRadius = Math.max(player.width, player.height) * 0.28 + coin.radius;
+
+            if (distance <= collectRadius) {
+                coin.collected = true;
+                this.coinCount += 1;
+                this.updateHud(`Coin collected! +${this.coinValue} score`);
+            }
+        }
+    }
+
     updateLasers() {
         const ctx = this.laserLayer?.getContext('2d');
         if (!ctx) return;
@@ -393,6 +432,9 @@ class PeppaBattleLevelBase {
 
         const player = this.getPlayer();
         const boss = this.getBoss();
+
+        // Draw and update coins first
+        this.updateCoins(ctx, player);
 
         let playerLaserDamage = this.playerDamage;
         if (player && typeof player.playerDamage === 'number') {
@@ -464,6 +506,8 @@ class PeppaBattleLevelBase {
         const existing = document.getElementById('peppa-win-overlay');
         if (existing) existing.remove();
 
+        const coinBonus = this.coinCount * this.coinValue;
+
         const overlay = document.createElement('div');
         overlay.id = 'peppa-win-overlay';
         overlay.style.cssText = `
@@ -474,6 +518,8 @@ class PeppaBattleLevelBase {
         overlay.innerHTML = `
             <div style="font-size:48px; font-weight:bold; margin-bottom:16px; text-shadow:0 0 20px gold;">VICTORY!</div>
             <div style="font-size:22px; margin-bottom:8px;">You defeated all challengers!</div>
+            <div style="font-size:18px; margin-bottom:8px;">Coins Collected: ${this.coinCount}</div>
+            <div style="font-size:18px; margin-bottom:8px;">Coin Bonus: ${coinBonus}</div>
             <div style="font-size:18px; margin-bottom:8px;">Final Score: ${this.levelScore}</div>
             <div style="font-size:16px; opacity:0.9;">The Peppa Pig Ring Champion</div>
             <div style="margin-top:32px; font-size:14px; opacity:0.7;">Press any key or click to continue</div>
@@ -548,6 +594,7 @@ class PeppaBattleLevelBase {
             <div style="font-weight:700; margin-bottom:8px; font-size:16px;">${this.config.levelTitle}</div>
             <div id="peppa-player-name-${this.config.levelId}" style="margin-bottom:6px; font-size:13px;"></div>
             <div id="peppa-player-hp-${this.config.levelId}" style="margin-bottom:4px;"></div>
+            <div id="peppa-coin-count-${this.config.levelId}" style="margin-bottom:4px;"></div>
             <div id="peppa-enemy-hp-${this.config.levelId}" style="margin-bottom:6px;"></div>
             <button id="peppa-change-name-${this.config.levelId}" style="margin-bottom:8px; padding:6px 10px; border:none; border-radius:6px; cursor:pointer;">Change Name</button>
             <div id="peppa-message-${this.config.levelId}" style="margin-top:6px; margin-bottom:10px; font-size:13px; min-height:18px;"></div>
@@ -574,6 +621,7 @@ class PeppaBattleLevelBase {
     updateHud(message = null) {
         const playerNameEl = document.getElementById(`peppa-player-name-${this.config.levelId}`);
         const playerHpEl = document.getElementById(`peppa-player-hp-${this.config.levelId}`);
+        const coinCountEl = document.getElementById(`peppa-coin-count-${this.config.levelId}`);
         const enemyHpEl = document.getElementById(`peppa-enemy-hp-${this.config.levelId}`);
         const messageEl = document.getElementById(`peppa-message-${this.config.levelId}`);
 
@@ -584,6 +632,9 @@ class PeppaBattleLevelBase {
         }
         if (playerHpEl) {
             playerHpEl.textContent = `HP: ${this.playerHealth}/${this.playerMaxHealth}`;
+        }
+        if (coinCountEl) {
+            coinCountEl.textContent = `Coins: ${this.coinCount} (${this.coinCount * this.coinValue} bonus)`;
         }
         if (enemyHpEl && boss) {
             enemyHpEl.textContent = `${this.config.enemyName} HP: ${boss.health}/${boss.maxHealth}`;
@@ -707,7 +758,7 @@ class PeppaBattleLevelBase {
 
         if (boss.isDefeated && !this.battleEnded) {
             this.battleEnded = true;
-            const score = this.playerHealth * 100;
+            const score = (this.playerHealth * 100) + (this.coinCount * this.coinValue);
             this.levelScore = score;
 
             this.saveScore(score)
