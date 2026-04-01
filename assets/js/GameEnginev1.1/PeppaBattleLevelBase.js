@@ -32,8 +32,9 @@ class PeppaBattleLevelBase {
         this.playerName = config.playerName || '';
         this.levelScore = 0;
         this.leaderboard = [];
+        this.storageKey = `peppaLeaderboard_${config.levelId || 'default'}`;
 
-        // Floor barrier: characters stay in lower portion (ground), cannot float in air
+        // Floor barrier
         this.floorY = height * 0.48;
         this.ceilingY = 0;
         this.playerSpawn = { x: width * 0.12, y: height * 0.72 };
@@ -90,6 +91,9 @@ class PeppaBattleLevelBase {
             window.speechSynthesis.cancel();
         }
 
+        console.log('[PeppaBattle] apiBase:', this.apiBase);
+        console.log('[PeppaBattle] levelId:', this.config.levelId);
+
         this.ensurePlayerName();
         this.createHud();
         this.updateHud('Fight! Use WASD to move and SPACE to fire lasers.');
@@ -119,6 +123,44 @@ class PeppaBattleLevelBase {
         localStorage.setItem('peppaPlayerName', this.playerName);
     }
 
+    getLocalLeaderboard() {
+        try {
+            const raw = localStorage.getItem(this.storageKey);
+            const parsed = raw ? JSON.parse(raw) : [];
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+            console.error('[PeppaBattle] Error reading local leaderboard:', error);
+            return [];
+        }
+    }
+
+    setLocalLeaderboard(entries) {
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(entries));
+        } catch (error) {
+            console.error('[PeppaBattle] Error saving local leaderboard:', error);
+        }
+    }
+
+    addLocalScore(score) {
+        const entries = this.getLocalLeaderboard();
+
+        entries.push({
+            name: this.playerName || 'Player',
+            score: Number(score) || 0,
+            levelId: this.config.levelId,
+            levelTitle: this.config.levelTitle
+        });
+
+        entries.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+        const trimmed = entries.slice(0, 8);
+        this.setLocalLeaderboard(trimmed);
+        this.leaderboard = trimmed;
+
+        console.log('[PeppaBattle] Local leaderboard updated:', trimmed);
+        return trimmed;
+    }
+
     destroy() {
         document.removeEventListener('keydown', this.boundKeyDown);
         if (this.messageClearTimeout) clearTimeout(this.messageClearTimeout);
@@ -135,13 +177,25 @@ class PeppaBattleLevelBase {
     }
 
     async saveScore(score) {
+        console.log('[PeppaBattle] saveScore called with:', score);
+
+        // Always save locally first so the leaderboard works even without backend
+        this.addLocalScore(score);
+
         if (!this.apiBase) {
-            console.log('No API base configured. Skipping score save.');
-            return null;
+            console.log('[PeppaBattle] No API base configured. Saved locally only.');
+            return {
+                success: true,
+                source: 'local',
+                leaderboard: this.leaderboard
+            };
         }
 
         try {
-            const response = await fetch(`${this.apiBase}/leaderboard`, {
+            const url = `${this.apiBase}/leaderboard`;
+            console.log('[PeppaBattle] POST ->', url);
+
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -154,41 +208,61 @@ class PeppaBattleLevelBase {
                 })
             });
 
+            console.log('[PeppaBattle] POST status:', response.status);
+
             if (!response.ok) {
                 throw new Error(`POST failed: ${response.status}`);
             }
 
             const data = await response.json();
-            console.log('Score saved:', data);
+            console.log('[PeppaBattle] Score saved to API:', data);
             return data;
         } catch (error) {
-            console.error('Error saving score:', error);
-            this.updateHud('Could not save score.');
-            return null;
+            console.error('[PeppaBattle] Error saving score to API, using local fallback:', error);
+            this.updateHud('Score saved locally.');
+            return {
+                success: true,
+                source: 'local-fallback',
+                leaderboard: this.leaderboard
+            };
         }
     }
 
     async loadLeaderboard() {
+        const localEntries = this.getLocalLeaderboard();
+
         if (!this.apiBase) {
-            console.log('No API base configured. Using empty leaderboard.');
-            this.leaderboard = [];
-            return [];
+            console.log('[PeppaBattle] No API base configured. Using local leaderboard only.');
+            this.leaderboard = localEntries;
+            return localEntries;
         }
 
         try {
-            const response = await fetch(`${this.apiBase}/leaderboard`);
+            const url = `${this.apiBase}/leaderboard`;
+            console.log('[PeppaBattle] GET ->', url);
+
+            const response = await fetch(url);
+            console.log('[PeppaBattle] GET status:', response.status);
 
             if (!response.ok) {
                 throw new Error(`GET failed: ${response.status}`);
             }
 
             const data = await response.json();
-            this.leaderboard = Array.isArray(data) ? data : [];
-            return this.leaderboard;
+            console.log('[PeppaBattle] GET response:', data);
+
+            if (Array.isArray(data) && data.length > 0) {
+                this.leaderboard = data;
+                return data;
+            }
+
+            console.log('[PeppaBattle] API returned empty list. Using local leaderboard.');
+            this.leaderboard = localEntries;
+            return localEntries;
         } catch (error) {
-            console.error('Error loading leaderboard:', error);
-            this.leaderboard = [];
-            return [];
+            console.error('[PeppaBattle] Error loading leaderboard from API. Using local fallback:', error);
+            this.leaderboard = localEntries;
+            return localEntries;
         }
     }
 
