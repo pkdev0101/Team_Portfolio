@@ -29,7 +29,7 @@ class PeppaBattleLevelBase {
 
         // API / leaderboard settings
         this.apiBase = config.apiBase || null;
-        this.playerName = config.playerName || 'Ishan';
+        this.playerName = config.playerName || '';
         this.levelScore = 0;
         this.leaderboard = [];
 
@@ -42,7 +42,7 @@ class PeppaBattleLevelBase {
         this.messageClearTimeout = null;
 
         const image_data_background = {
-             name: `peppa-${config.levelId}-arena`,
+            name: `peppa-${config.levelId}-arena`,
             greeting: config.levelIntro,
             src: `${path}/images/gamify/PeppaPigBackground.jpg`,
             pixels: { height: 1229, width: 1920 }
@@ -85,149 +85,159 @@ class PeppaBattleLevelBase {
     }
 
     initialize() {
-        // Completely disable speech synthesis
         if (window.speechSynthesis) {
-            window.speechSynthesis.speak = () => {}; // Override speak to do nothing
+            window.speechSynthesis.speak = () => {};
             window.speechSynthesis.cancel();
         }
+
+        this.ensurePlayerName();
         this.createHud();
-        this.updateHud(
-            `Fight! Use WASD to move and SPACE to fire lasers (shoot in facing direction).`
-        );
+        this.updateHud('Fight! Use WASD to move and SPACE to fire lasers.');
         document.addEventListener('keydown', this.boundKeyDown);
         this.createLaserLayer();
 
-        // Load leaderboard when level starts
         this.loadLeaderboard().then(() => {
             this.renderLeaderboard();
         });
     }
 
+    ensurePlayerName() {
+        if (this.playerName && this.playerName.trim()) return;
+
+        const savedName = localStorage.getItem('peppaPlayerName');
+        if (savedName && savedName.trim()) {
+            this.playerName = savedName.trim();
+            return;
+        }
+
+        let inputName = window.prompt('Enter your name for the leaderboard:', '');
+        if (!inputName || !inputName.trim()) {
+            inputName = 'Player';
+        }
+
+        this.playerName = inputName.trim().slice(0, 20);
+        localStorage.setItem('peppaPlayerName', this.playerName);
+    }
+
     destroy() {
         document.removeEventListener('keydown', this.boundKeyDown);
-        if (this.messageClearTimeout) {
-            clearTimeout(this.messageClearTimeout);
-        }
-        if (this.messageTimeout) {
-            clearTimeout(this.messageTimeout);
-        }
-        if (this.restartTimeout) {
-            clearTimeout(this.restartTimeout);
-        }
-        if (this.hud) {
-            this.hud.remove();
-        }
-        if (this.laserLayer && this.laserLayer.parentNode) {
-            this.laserLayer.remove();
-        }
+        if (this.messageClearTimeout) clearTimeout(this.messageClearTimeout);
+        if (this.messageTimeout) clearTimeout(this.messageTimeout);
+        if (this.restartTimeout) clearTimeout(this.restartTimeout);
+        if (this.hud) this.hud.remove();
+        if (this.laserLayer && this.laserLayer.parentNode) this.laserLayer.remove();
+
         const loseOverlay = document.getElementById(`peppa-lose-overlay-${this.config.levelId}`);
-        if (loseOverlay) {
-            loseOverlay.remove();
-        }
+        if (loseOverlay) loseOverlay.remove();
+
         const winOverlay = document.getElementById('peppa-win-overlay');
-        if (winOverlay) {
-            winOverlay.remove();
-        }
+        if (winOverlay) winOverlay.remove();
     }
 
     async saveScore(score) {
-    if (!this.apiBase) {
-        console.log('No API base configured. Skipping score save.');
-        return null;
-    }
-
-    try {
-        const response = await fetch(`${this.apiBase}/leaderboard`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: this.playerName,
-                score: score,
-                levelId: this.config.levelId,
-                levelTitle: this.config.levelTitle
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`POST failed: ${response.status}`);
+        if (!this.apiBase) {
+            console.log('No API base configured. Skipping score save.');
+            return null;
         }
 
-        const data = await response.json();
-        console.log('Score saved:', data);
-        return data;
-    } catch (error) {
-        console.error('Error saving score:', error);
-        this.updateHud('Won battle, but score could not be saved.');
-        return null;
+        try {
+            const response = await fetch(`${this.apiBase}/leaderboard`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: this.playerName || 'Player',
+                    score: score,
+                    levelId: this.config.levelId,
+                    levelTitle: this.config.levelTitle
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`POST failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Score saved:', data);
+            return data;
+        } catch (error) {
+            console.error('Error saving score:', error);
+            this.updateHud('Could not save score.');
+            return null;
+        }
     }
-}
 
-async loadLeaderboard() {
-    if (!this.apiBase) {
-        console.log('No API base configured. Using empty leaderboard.');
-        this.leaderboard = [];
-        return [];
-    }
-
-    try {
-        const response = await fetch(`${this.apiBase}/leaderboard`);
-
-        if (!response.ok) {
-            throw new Error(`GET failed: ${response.status}`);
+    async loadLeaderboard() {
+        if (!this.apiBase) {
+            console.log('No API base configured. Using empty leaderboard.');
+            this.leaderboard = [];
+            return [];
         }
 
-        const data = await response.json();
-        this.leaderboard = Array.isArray(data) ? data : [];
-        return this.leaderboard;
-    } catch (error) {
-        console.error('Error loading leaderboard:', error);
-        this.leaderboard = [];
-        return [];
+        try {
+            const response = await fetch(`${this.apiBase}/leaderboard`);
+
+            if (!response.ok) {
+                throw new Error(`GET failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            this.leaderboard = Array.isArray(data) ? data : [];
+            return this.leaderboard;
+        } catch (error) {
+            console.error('Error loading leaderboard:', error);
+            this.leaderboard = [];
+            return [];
+        }
     }
-}
 
     renderLeaderboard() {
         const leaderboardEl = document.getElementById(`peppa-leaderboard-${this.config.levelId}`);
         if (!leaderboardEl) return;
 
         if (!this.leaderboard || this.leaderboard.length === 0) {
-            leaderboardEl.innerHTML = '<div style="opacity:0.8;">Leaderboard: no scores yet.</div>';
+            leaderboardEl.innerHTML = `
+                <div style="font-weight:700; margin-bottom:6px;">Leaderboard</div>
+                <div style="opacity:0.8;">No scores yet.</div>
+            `;
             return;
         }
 
+        const sorted = [...this.leaderboard]
+            .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+            .slice(0, 8);
+
         leaderboardEl.innerHTML = `
-            <div style="font-weight:700; margin-bottom:4px;">Leaderboard</div>
-            ${this.leaderboard
-                .slice(0, 5)
-                .map((entry, index) => {
-                    const name = entry.name ?? 'Player';
-                    const score = entry.score ?? 0;
-                    return `<div>${index + 1}. ${name} - ${score}</div>`;
-                })
-                .join('')}
+            <div style="font-weight:700; margin-bottom:8px; font-size:16px;">Leaderboard</div>
+            ${sorted.map((entry, index) => {
+                const name = entry.name ?? 'Player';
+                const score = entry.score ?? 0;
+                return `
+                    <div style="display:flex; justify-content:space-between; gap:12px; margin-bottom:6px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:4px;">
+                        <span>${index + 1}. ${name}</span>
+                        <span>${score}</span>
+                    </div>
+                `;
+            }).join('')}
         `;
     }
 
     showLoseScreenAndRestart() {
         const existing = document.getElementById(`peppa-lose-overlay-${this.config.levelId}`);
-        if (existing) {
-            existing.remove();
-        }
+        if (existing) existing.remove();
 
         const overlay = document.createElement('div');
         overlay.id = `peppa-lose-overlay-${this.config.levelId}`;
         overlay.style.cssText = `
             position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column;
             align-items: center; justify-content: center; background: rgba(0,0,0,0.88);
-            color: #fff; font-family: Arial, sans-serif; text-align: center; animation: peppa-lose-fade 0.35s ease;
+            color: #fff; font-family: Arial, sans-serif; text-align: center;
         `;
         overlay.innerHTML = `
-            <style>@keyframes peppa-lose-fade { from { opacity: 0; } to { opacity: 1; } }</style>
-            <div style="font-size: 44px; font-weight: bold; margin-bottom: 12px; color: #ff5b5b; text-shadow: 0 0 14px rgba(255,91,91,0.85);">YOU LOST</div>
-            <div style="font-size: 22px; margin-bottom: 8px;">Try again.</div>
-            <div style="font-size: 14px; opacity: 0.8;">Restarting level...</div>
+            <div style="font-size:44px; font-weight:bold; margin-bottom:12px; color:#ff5b5b;">YOU LOST</div>
+            <div style="font-size:22px; margin-bottom:8px;">Try again.</div>
+            <div style="font-size:14px; opacity:0.8;">Restarting level...</div>
         `;
         document.body.appendChild(overlay);
 
@@ -244,9 +254,11 @@ async loadLeaderboard() {
         this.laserLayer = document.createElement('canvas');
         this.laserLayer.id = `peppa-laser-layer-${this.config.levelId}`;
         this.laserLayer.style.cssText = 'position:absolute; left:0; top:0; pointer-events:none; z-index:15;';
+
         const container = this.gameEnv.gameContainer || this.gameEnv.container || document.getElementById('gameContainer') || document.body;
         container.style.position = 'relative';
         container.appendChild(this.laserLayer);
+
         this.laserLayer.width = this.gameEnv.innerWidth;
         this.laserLayer.height = this.gameEnv.innerHeight;
         this.laserLayer.style.width = `${this.gameEnv.innerWidth}px`;
@@ -308,7 +320,6 @@ async loadLeaderboard() {
         const player = this.getPlayer();
         const boss = this.getBoss();
 
-        // Use playerDamage from player object if available
         let playerLaserDamage = this.playerDamage;
         if (player && typeof player.playerDamage === 'number') {
             playerLaserDamage = player.playerDamage;
@@ -377,24 +388,21 @@ async loadLeaderboard() {
 
     showWinScreen() {
         const existing = document.getElementById('peppa-win-overlay');
-        if (existing) {
-            existing.remove();
-        }
+        if (existing) existing.remove();
 
         const overlay = document.createElement('div');
         overlay.id = 'peppa-win-overlay';
         overlay.style.cssText = `
             position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column;
             align-items: center; justify-content: center; background: rgba(0,0,0,0.85);
-            color: #fff; font-family: Arial, sans-serif; text-align: center; animation: peppa-win-fade 0.5s ease;
+            color: #fff; font-family: Arial, sans-serif; text-align: center;
         `;
         overlay.innerHTML = `
-            <style>@keyframes peppa-win-fade { from { opacity: 0; } to { opacity: 1; } }</style>
-            <div style="font-size: 48px; font-weight: bold; margin-bottom: 16px; text-shadow: 0 0 20px gold;">VICTORY!</div>
-            <div style="font-size: 22px; margin-bottom: 8px;">You defeated all challengers!</div>
-            <div style="font-size: 18px; margin-bottom: 8px;">Final Score: ${this.levelScore}</div>
-            <div style="font-size: 16px; opacity: 0.9;">The Peppa Pig Ring Champion</div>
-            <div style="margin-top: 32px; font-size: 14px; opacity: 0.7;">Press any key or click to continue</div>
+            <div style="font-size:48px; font-weight:bold; margin-bottom:16px; text-shadow:0 0 20px gold;">VICTORY!</div>
+            <div style="font-size:22px; margin-bottom:8px;">You defeated all challengers!</div>
+            <div style="font-size:18px; margin-bottom:8px;">Final Score: ${this.levelScore}</div>
+            <div style="font-size:16px; opacity:0.9;">The Peppa Pig Ring Champion</div>
+            <div style="margin-top:32px; font-size:14px; opacity:0.7;">Press any key or click to continue</div>
         `;
         const finish = () => {
             overlay.remove();
@@ -445,50 +453,71 @@ async loadLeaderboard() {
     createHud() {
         this.hud = document.createElement('div');
         this.hud.id = `peppa-battle-hud-${this.config.levelId}`;
+
         Object.assign(this.hud.style, {
             position: 'absolute',
             top: '12px',
-            left: '12px',
+            right: '12px',
             zIndex: '9999',
-            padding: '10px 12px',
-            borderRadius: '8px',
-            background: 'rgba(0, 0, 0, 0.62)',
+            width: '240px',
+            padding: '12px',
+            borderRadius: '10px',
+            background: 'rgba(0, 0, 0, 0.72)',
             color: '#fff',
             fontFamily: 'Arial, sans-serif',
-            minWidth: '300px',
-            pointerEvents: 'none',
-            lineHeight: '1.35'
+            pointerEvents: 'auto',
+            lineHeight: '1.35',
+            boxShadow: '0 0 10px rgba(0,0,0,0.35)'
         });
 
         this.hud.innerHTML = `
-            <div style="font-weight:700; margin-bottom:4px;">${this.config.levelTitle}</div>
-            <div id="peppa-player-hp-${this.config.levelId}"></div>
-            <div id="peppa-enemy-hp-${this.config.levelId}"></div>
-            <div id="peppa-message-${this.config.levelId}" style="margin-top:6px; font-size:13px;"></div>
+            <div style="font-weight:700; margin-bottom:8px; font-size:16px;">${this.config.levelTitle}</div>
+            <div id="peppa-player-name-${this.config.levelId}" style="margin-bottom:6px; font-size:13px;"></div>
+            <div id="peppa-player-hp-${this.config.levelId}" style="margin-bottom:4px;"></div>
+            <div id="peppa-enemy-hp-${this.config.levelId}" style="margin-bottom:6px;"></div>
+            <button id="peppa-change-name-${this.config.levelId}" style="margin-bottom:8px; padding:6px 10px; border:none; border-radius:6px; cursor:pointer;">Change Name</button>
+            <div id="peppa-message-${this.config.levelId}" style="margin-top:6px; margin-bottom:10px; font-size:13px; min-height:18px;"></div>
             <div id="peppa-leaderboard-${this.config.levelId}" style="margin-top:8px; font-size:12px;"></div>
         `;
 
         const container = this.gameEnv.gameContainer || this.gameEnv.container || document.getElementById('gameContainer') || document.body;
         container.style.position = 'relative';
         container.appendChild(this.hud);
+
+        const changeNameBtn = document.getElementById(`peppa-change-name-${this.config.levelId}`);
+        if (changeNameBtn) {
+            changeNameBtn.addEventListener('click', () => {
+                const newName = window.prompt('Enter a new leaderboard name:', this.playerName || 'Player');
+                if (newName && newName.trim()) {
+                    this.playerName = newName.trim().slice(0, 20);
+                    localStorage.setItem('peppaPlayerName', this.playerName);
+                    this.updateHud('Name updated.');
+                }
+            });
+        }
     }
 
     updateHud(message = null) {
+        const playerNameEl = document.getElementById(`peppa-player-name-${this.config.levelId}`);
         const playerHpEl = document.getElementById(`peppa-player-hp-${this.config.levelId}`);
         const enemyHpEl = document.getElementById(`peppa-enemy-hp-${this.config.levelId}`);
         const messageEl = document.getElementById(`peppa-message-${this.config.levelId}`);
 
         const boss = this.getBoss();
+
+        if (playerNameEl) {
+            playerNameEl.textContent = `Player: ${this.playerName || 'Player'}`;
+        }
         if (playerHpEl) {
-            playerHpEl.textContent = `Ishan HP: ${this.playerHealth}/${this.playerMaxHealth}`;
+            playerHpEl.textContent = `HP: ${this.playerHealth}/${this.playerMaxHealth}`;
         }
         if (enemyHpEl && boss) {
             enemyHpEl.textContent = `${this.config.enemyName} HP: ${boss.health}/${boss.maxHealth}`;
         }
+
         if (messageEl && message !== null) {
             messageEl.textContent = message;
 
-            // Auto-clear transient combat messages after a short delay
             if (this.messageClearTimeout) {
                 clearTimeout(this.messageClearTimeout);
             }
@@ -515,7 +544,6 @@ async loadLeaderboard() {
         if (!player || !boss) return;
 
         const floorY = this.floorY;
-        const width = this.gameEnv.innerWidth;
         const height = this.gameEnv.innerHeight;
 
         player.position.x = this.playerSpawn.x;
@@ -558,17 +586,12 @@ async loadLeaderboard() {
     }
 
     update() {
-        if (this.battleEnded) {
-            return;
-        }
+        if (this.battleEnded) return;
 
         const player = this.getPlayer();
         const boss = this.getBoss();
-        if (!player || !boss) {
-            return;
-        }
+        if (!player || !boss) return;
 
-        // Force consistent opening positions so players do not spawn off in corners
         this.enforceInitialSpawnPositions(player, boss);
 
         const now = Date.now();
@@ -610,7 +633,6 @@ async loadLeaderboard() {
 
         if (boss.isDefeated && !this.battleEnded) {
             this.battleEnded = true;
-
             const score = this.playerHealth * 100;
             this.levelScore = score;
 
