@@ -1,5 +1,5 @@
-import GamEnvBackground from './essentials/GameEnvBackground.js';
-import Player from './essentials/Player.js';
+import GameEnvBackground from '@assets/js/GameEnginev1.1/essentials/GameEnvBackground.js';
+import Player from '@assets/js/GameEnginev1.1/essentials/Player.js';
 import PeppaBossEnemy from './PeppaBossEnemy.js';
 
 class PeppaBattleLevelBase {
@@ -51,14 +51,14 @@ class PeppaBattleLevelBase {
         const image_data_background = {
             name: `peppa-${config.levelId}-arena`,
             greeting: config.levelIntro,
-            src: `${path}/images/gamify/PeppaPigBackground.jpg`,
+            src: `${path}/images/projects/PeppaPigGame/PeppaPigBackground.jpg`,
             pixels: { height: 1229, width: 1920 }
         };
 
         const sprite_data_ishan = {
             id: 'IshanJha',
             greeting: 'Ishan Jha enters the ring. Press SPACE to attack.',
-            src: `${path}/images/gamify/IshanJha.png`,
+            src: `${path}/images/projects/PeppaPigGame/IshanJha.png`,
             SCALE_FACTOR: 4,
             STEP_FACTOR: 1100,
             ANIMATION_RATE: 12,
@@ -73,7 +73,7 @@ class PeppaBattleLevelBase {
         const sprite_data_enemy = {
             id: config.enemyName,
             greeting: config.enemyGreeting,
-            src: `${path}/images/gamify/${config.enemyImage}`,
+            src: `${path}/images/projects/PeppaPigGame/${config.enemyImage}`,
             SCALE_FACTOR: config.enemyScale ?? 4,
             ANIMATION_RATE: 18,
             INIT_POSITION: this.enemySpawn,
@@ -83,7 +83,7 @@ class PeppaBattleLevelBase {
         };
 
         this.classes = [
-            { class: GamEnvBackground, data: image_data_background },
+            { class: GameEnvBackground, data: image_data_background },
             { class: Player, data: sprite_data_ishan },
             { class: PeppaBossEnemy, data: sprite_data_enemy }
         ];
@@ -287,7 +287,7 @@ class PeppaBattleLevelBase {
         const overlay = document.createElement('div');
         overlay.id = `peppa-lose-overlay-${this.config.levelId}`;
         overlay.style.cssText = `
-            position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column;
+            position: absolute; inset: 0; z-index: 99999; display: flex; flex-direction: column;
             align-items: center; justify-content: center; background: rgba(0,0,0,0.88);
             color: #fff; font-family: Arial, sans-serif; text-align: center;
         `;
@@ -296,7 +296,10 @@ class PeppaBattleLevelBase {
             <div style="font-size:22px; margin-bottom:8px;">Try again.</div>
             <div style="font-size:14px; opacity:0.8;">Restarting level...</div>
         `;
-        document.body.appendChild(overlay);
+
+        const container = this.gameEnv.gameContainer || this.gameEnv.container || document.getElementById('gameContainer') || document.body;
+        container.style.position = 'relative';
+        container.appendChild(overlay);
 
         const ctrl = this.gameEnv?.gameControl;
         this.restartTimeout = setTimeout(() => {
@@ -511,7 +514,7 @@ class PeppaBattleLevelBase {
         const overlay = document.createElement('div');
         overlay.id = 'peppa-win-overlay';
         overlay.style.cssText = `
-            position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column;
+            position: absolute; inset: 0; z-index: 99999; display: flex; flex-direction: column;
             align-items: center; justify-content: center; background: rgba(0,0,0,0.85);
             color: #fff; font-family: Arial, sans-serif; text-align: center;
         `;
@@ -532,7 +535,10 @@ class PeppaBattleLevelBase {
         };
         overlay.addEventListener('click', finish);
         document.addEventListener('keydown', finish, { once: true });
-        document.body.appendChild(overlay);
+
+        const container = this.gameEnv.gameContainer || this.gameEnv.container || document.getElementById('gameContainer') || document.body;
+        container.style.position = 'relative';
+        container.appendChild(overlay);
     }
 
     enforceFloorBarriers() {
